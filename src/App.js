@@ -1,23 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
+import Sidenav from './components/sidenav';
+import { Routes, Route, Link } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="header"></div>
+      <div className="main-ctn">
+        <div className="side-nav">
+          <Sidenav></Sidenav>
+        </div>
+        <div className="content-ctn">
+          <Routes>
+            <Route path="/" element={<div>메인화면</div>}></Route>
+
+            <Route path="/board">
+              <Route
+                path="communityBoard"
+                element={<div>커뮤니티보드</div>}
+              ></Route>
+              <Route
+                path="noticeBoard"
+                element={<div>공지사항보드</div>}
+              ></Route>
+            </Route>
+
+            <Route path="*" element={<div>404 없는 페이지입니다!</div>}></Route>
+          </Routes>
+        </div>
+      </div>
     </div>
   );
 }
