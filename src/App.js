@@ -1,6 +1,8 @@
 import './App.css';
 import Sidenav from './components/sidenav';
 import { Routes, Route, Link } from 'react-router-dom';
+import CommunityBoard from './route/communityBoard';
+
 
 function App() {
   return (
@@ -17,7 +19,7 @@ function App() {
             <Route path="/board">
               <Route
                 path="communityBoard"
-                element={<div>커뮤니티보드</div>}
+                element={<CommunityBoard />}
               ></Route>
               <Route
                 path="noticeBoard"

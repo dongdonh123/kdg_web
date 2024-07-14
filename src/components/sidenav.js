@@ -5,7 +5,7 @@ function Sidenav() {
   let navigate = useNavigate();
 
   return (
-    <Accordion>
+    <Accordion alwaysOpen>
       <Accordion.Item eventKey="0">
         <Accordion.Header>통합검색</Accordion.Header>
         <Accordion.Body>
