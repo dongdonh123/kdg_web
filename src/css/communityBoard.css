@@ -1,0 +1,19 @@
+th.checkbox-column {
+    width: 3%;
+}
+
+th.number-column {
+    width: 5%;
+}
+
+th.title-column {
+    width: 40%;
+}
+
+th.author-column {
+    width: 10%;
+}
+
+th.date-column {
+    width: 10%;
+}

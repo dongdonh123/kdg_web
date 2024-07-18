@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import '../css/content-ctn1.css';
+import '../css/communityBoard.css';
 
 function CommunityBoard() {
   const [boardList, setBoardList] = useState([]);
   const [otherInformation, setOtherInformation] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(50);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+  const [showFilters, setShowFilters] = useState(false);
+
 
 
     const fetchBoardList = async (page_no, page_cnt) => {
@@ -15,15 +20,20 @@ function CommunityBoard() {
         const response = await axios.get(`http://localhost:8080/api/board?page_no=${page_no}&page_cnt=${page_cnt}`);
         setBoardList(response.data.boardList);
         setOtherInformation(response.data.otherInformation);
+        setIsFirstLoad(false);
       } catch (error) {
         console.error('Error fetching board list:', error);
       }
     };
 
-  // 페이지가 처음 마운트될 때 데이터 가져오기
+ 
   useEffect(() => {
+    if (isFirstLoad) {
+      
+      return;
+    }
     fetchBoardList(currentPage, itemsPerPage);
-  }, [currentPage]); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 호출
+  }, [currentPage,itemsPerPage]); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 호출
 
   const totalPages = otherInformation.max_page_no || 1;
 
@@ -35,6 +45,7 @@ function CommunityBoard() {
 
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(parseInt(event.target.value, 10));
+    setCurrentPage(1);
   };
 
   const handleSearch = () => {
@@ -44,7 +55,9 @@ function CommunityBoard() {
 
   const pagelist = () => {
     let pages = [];
-    for (let i = 1; i <= totalPages; i++) {
+    let start = Math.max(1, (Math.floor((currentPage - 1) / 10) * 10) + 1); // 시작 페이지
+    let end = Math.min(start + 9, totalPages); // 끝 페이지는 최대 totalPages까지
+    for (let i = start; i <= end; i++) {
       pages.push(
         <Button key={i} onClick={() => handlePageChange(i)} disabled={i === currentPage}>
           {i}
@@ -54,36 +67,61 @@ function CommunityBoard() {
     return pages;
   };
 
+  const toggleFilters = () => {
+    setShowFilters(!showFilters);
+    const filtersDiv = document.getElementById('검색조건');
+    const MainsDiv = document.getElementById('메인그리드'); 
+    if (filtersDiv) {
+      filtersDiv.style.height = showFilters ? '40px' : '80px';
+      MainsDiv.style.height = showFilters ? 'calc(100vh - 160px - 56px)' : 'calc(100vh - 200px - 56px)';
+    }
+  };
+
   return (
     <div>
       <div className="메뉴명">
-        <div>용어</div><div></div>
+        <div>커뮤니티게시판</div><div></div>
       </div>
       <div className="버튼"><Button>신규</Button><Button>수정</Button><Button>삭제</Button></div>
-      <div className="검색조건"><Button onClick={handleSearch}>검색</Button></div>
-      <div className="메인그리드">
+      <div className="검색조건" id="검색조건">
+        <button className="toggle-button" onClick={toggleFilters}>
+          필터
+        </button>
+        <Button onClick={handleSearch}>검색</Button></div>
+        {showFilters && (
+          <div> 
+            제목 : <input type="text" placeholder="제목 검색" />
+            작성자 : <input type="text" placeholder="작성자 검색" />
+            작성일 : <input type="date" placeholder="작성일 검색" /> ~ <input type="date" placeholder="작성일 검색" />
+          </div>
+      )}
+      <div className="메인그리드" id="메인그리드">
         <table>
           <thead>
             <tr>
-              <th>게시글 번호</th>
-              <th>제목</th>
-              <th>내용</th>
-              <th>작성일시</th>
-              <th>작성자</th>
-              <th>수정일시</th>
-              <th>수정자</th>
+              <th className="checkbox-column"><input type="checkbox"/></th>
+              <th className="number-column">번호</th>
+              <th className="title-column">제목</th>
+              <th className="author-column">작성자</th>
+              <th className="date-column">작성일시</th>
             </tr>
           </thead>
           <tbody>
-            {boardList.map(board => (
+            {boardList.map((board, index) => (
               <tr key={board.board_id}>
-                <td>{board.board_id}</td>
-                <td>{board.board_title}</td>
-                <td>{board.board_contents}</td>
-                <td>{new Date(board.create_dt).toLocaleString()}</td>
+                 <td>
+          <input
+            type="checkbox"
+
+          />
+        </td>
+              <td>{(currentPage - 1) * itemsPerPage + index + 1}</td> {/* 1부터 시작하는 화면 번호 */}
+              <td>
+                {board.board_title}
+                <input type="hidden" value={board.board_id} /> {/* hidden으로 보관하는 board_id */}
+              </td>
                 <td>{board.create_user}</td>
-                <td>{new Date(board.modify_dt).toLocaleString()}</td>
-                <td>{board.modify_user}</td>
+                <td>{new Date(board.create_dt).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>
@@ -103,10 +141,15 @@ function CommunityBoard() {
           </select>
         </div>
         <div id="right">
-          1-{otherInformation.this_page_row} of {otherInformation.total_row} items 
+        {isFirstLoad ?  null :(
+    <>
+      {otherInformation.current_page_data_min}-{(otherInformation.page_no === otherInformation.max_page_no) ? otherInformation.total_row : otherInformation.current_page_data_max} of {otherInformation.total_row} items 
+    </>
+  )}        <Button onClick={() => handlePageChange(1)} disabled={currentPage === 1}>&lt;&lt;</Button>
            <Button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>&lt;</Button>
           {pagelist()}
-          <Button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>&gt;</Button> 
+          <Button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>&gt;</Button>
+          <Button onClick={() => handlePageChange(otherInformation.max_page_no)} disabled={currentPage === totalPages}>&gt;&gt;</Button> 
         </div>
       </div>
     </div>

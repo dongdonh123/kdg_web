@@ -22,7 +22,7 @@
   .메인그리드{
     border: red , 1px , solid;
     height: calc(100vh - 200px - var(--header-height));
-    max-height: calc(100vh - 200px - var(--header-height)); /* 사이드바가 화면 높이를 넘지 않도록 설정 */
+    max-height: calc(100vh - 200px - var(--header-height));
     overflow-y: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
   }
   
@@ -35,4 +35,6 @@
     border: red , 1px , solid;
     height: 40px;
   }
+
+  
   /*메인 컨텐츠 설정 끝*/
