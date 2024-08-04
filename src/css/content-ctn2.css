@@ -25,6 +25,13 @@
     max-height: calc(100vh - 200px - var(--header-height));
     overflow-y: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
   }
+
+  .TableBody{
+    height: calc(100vh - 200px - var(--header-height));
+    max-height: calc(100vh - 200px - var(--header-height));
+    overflow-y: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
+
+  }
   
   .페이지{
     border: red , 1px , solid;

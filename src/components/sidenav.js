@@ -9,13 +9,7 @@ function Sidenav() {
       <Accordion.Item eventKey="0">
         <Accordion.Header>통합검색</Accordion.Header>
         <Accordion.Body>
-          <span
-            onClick={() => {
-              navigate('/');
-            }}
-          >
-            통합검색1
-          </span>
+          <span onClick={() => {navigate('/');}}>통합검색1</span>
           <hr />
           <span>통합검색2</span>
           <hr />
@@ -25,21 +19,9 @@ function Sidenav() {
       <Accordion.Item eventKey="1">
         <Accordion.Header>게시판</Accordion.Header>
         <Accordion.Body>
-          <span
-            onClick={() => {
-              navigate('/board/communityBoard');
-            }}
-          >
-            커뮤니티 게시판
-          </span>
+          <span onClick={() => {navigate('/board/communityBoard');}}>커뮤니티 게시판</span>
           <hr />
-          <span
-            onClick={() => {
-              navigate('/board/noticeBoard');
-            }}
-          >
-            공지사항 게시판
-          </span>
+          <span onClick={() => {navigate('/board/noticeBoard');}}>공지사항 게시판</span>
         </Accordion.Body>
       </Accordion.Item>
       <Accordion.Item eventKey="2">
@@ -85,7 +67,7 @@ function Sidenav() {
           <hr />
           <span>방문자 관리</span>
           <hr />
-          <span>메뉴 관리</span>
+          <span onClick={() => {navigate('/admin/menuManagement');}}>메뉴 관리</span>
           <hr />
           <span>서버 관리</span>
           <hr />
@@ -94,6 +76,14 @@ function Sidenav() {
           <span>배치 관리</span>
           <hr />
           <span>사용자 관리</span>
+          <hr />
+          
+        </Accordion.Body>
+      </Accordion.Item>
+      <Accordion.Item eventKey="7">
+        <Accordion.Header>제작자 유지보수</Accordion.Header>
+        <Accordion.Body>
+          <span onClick={() => {navigate('/maintenance/resetdata');}}>데이터 리셋</span>
         </Accordion.Body>
       </Accordion.Item>
     </Accordion>

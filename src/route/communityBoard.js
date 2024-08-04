@@ -11,20 +11,41 @@ function CommunityBoard() {
   const [itemsPerPage, setItemsPerPage] = useState(50);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(false); //검색조건 영역 
+
+  const [isAllChecked, setIsAllChecked] = useState(false); //체크박스
+  const [checkedItems, setCheckedItems] = useState([]); //체크박스
+
+  const handleAllCheck = () => {
+    const newIsAllChecked = !isAllChecked;
+    setIsAllChecked(newIsAllChecked);
+    if (newIsAllChecked) {
+      setCheckedItems(boardList.map(board => board.board_id));
+    } else {
+      setCheckedItems([]);
+    }
+  };
+
+  const handleCheck = (boardId) => {
+    if (checkedItems.includes(boardId)) {
+      setCheckedItems(checkedItems.filter(id => id !== boardId));
+    } else {
+      setCheckedItems([...checkedItems, boardId]);
+    }
+  };
 
 
 
-    const fetchBoardList = async (page_no, page_cnt) => {
-      try {
-        const response = await axios.get(`http://localhost:8080/api/board?page_no=${page_no}&page_cnt=${page_cnt}`);
-        setBoardList(response.data.boardList);
-        setOtherInformation(response.data.otherInformation);
-        setIsFirstLoad(false);
-      } catch (error) {
-        console.error('Error fetching board list:', error);
-      }
-    };
+  const fetchBoardList = async (page_no, page_cnt) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/board?page_no=${page_no}&page_cnt=${page_cnt}`);
+      setBoardList(response.data.boardList);
+      setOtherInformation(response.data.otherInformation);
+      setIsFirstLoad(false);
+    } catch (error) {
+      console.error('Error fetching board list:', error);
+    }
+  };
 
  
   useEffect(() => {
@@ -73,7 +94,7 @@ function CommunityBoard() {
     const MainsDiv = document.getElementById('메인그리드'); 
     if (filtersDiv) {
       filtersDiv.style.height = showFilters ? '40px' : '80px';
-      MainsDiv.style.height = showFilters ? 'calc(100vh - 160px - 56px)' : 'calc(100vh - 200px - 56px)';
+      MainsDiv.style.height = showFilters ? 'calc(100vh - 216px)' : 'calc(100vh - 256px)';
     }
   };
 
@@ -87,39 +108,32 @@ function CommunityBoard() {
         <button className="toggle-button" onClick={toggleFilters}>
           필터
         </button>
-        <Button onClick={handleSearch}>검색</Button></div>
+        <Button onClick={handleSearch}>검색</Button>
         {showFilters && (
           <div> 
             제목 : <input type="text" placeholder="제목 검색" />
             작성자 : <input type="text" placeholder="작성자 검색" />
             작성일 : <input type="date" placeholder="작성일 검색" /> ~ <input type="date" placeholder="작성일 검색" />
           </div>
-      )}
+        )}
+      </div>
       <div className="메인그리드" id="메인그리드">
-        <table>
-          <thead>
+        <table className ="MainTable">
+          <thead className="TableHeader">
             <tr>
-              <th className="checkbox-column"><input type="checkbox"/></th>
+              <th className="checkbox-column"><input type="checkbox"  checked={isAllChecked} onChange={handleAllCheck}/></th>
               <th className="number-column">번호</th>
               <th className="title-column">제목</th>
               <th className="author-column">작성자</th>
               <th className="date-column">작성일시</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="TableBody" id ="TableBody">
             {boardList.map((board, index) => (
               <tr key={board.board_id}>
-                 <td>
-          <input
-            type="checkbox"
-
-          />
-        </td>
-              <td>{(currentPage - 1) * itemsPerPage + index + 1}</td> {/* 1부터 시작하는 화면 번호 */}
-              <td>
-                {board.board_title}
-                <input type="hidden" value={board.board_id} /> {/* hidden으로 보관하는 board_id */}
-              </td>
+                <td><input type="checkbox"  checked={checkedItems.includes(board.board_id)} onChange={() => handleCheck(board.board_id)}/></td>
+                <td>{(currentPage - 1) * itemsPerPage + index + 1}</td> {/* 1부터 시작하는 화면 번호 */}
+                <td> {board.board_title} <input type="hidden" value={board.board_id} /> {/* hidden으로 보관하는 board_id */} </td>
                 <td>{board.create_user}</td>
                 <td>{new Date(board.create_dt).toLocaleString()}</td>
               </tr>
