@@ -6,6 +6,8 @@
     cursor: pointer;
     font-size: 14px;
     color: #fff;
+    height: 40px;
+    margin-right: 10px;
   }
   
   .button-primary {

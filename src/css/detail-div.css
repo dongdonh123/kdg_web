@@ -1,0 +1,24 @@
+.메뉴정보컨텐츠 {
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+}
+.detail-item {
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    
+}
+.item-label {
+    font-weight: bold;
+    color: #333;
+    margin-right: 20px;
+    width: 180px;
+}
+.리셋SQL{
+    height: calc(100vh - 500px);
+    max-height: calc(100vh - 500px);
+    overflow-y: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
+    overflow-x: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
+}
+
