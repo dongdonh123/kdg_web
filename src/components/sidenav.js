@@ -61,21 +61,25 @@ function Sidenav() {
       <Accordion.Item eventKey="6">
         <Accordion.Header>관리자 설정</Accordion.Header>
         <Accordion.Body>
-          <span>화면 메세지 관리</span>
+          <span onClick={() => {navigate('/admin/roleManagement');}}>역할관리</span>
           <hr />
-          <span>코드 관리</span>
+          <span>사용자관리</span>
           <hr />
-          <span>방문자 관리</span>
+          <span>메뉴관리</span>
           <hr />
           <span onClick={() => {navigate('/admin/menuManagement');}}>메뉴 관리</span>
           <hr />
-          <span>서버 관리</span>
+          <span>권한관리</span>
           <hr />
-          <span>업무 관리</span>
+          <span>코드관리</span>
           <hr />
-          <span>배치 관리</span>
+          <span>업무관리</span>
           <hr />
-          <span>사용자 관리</span>
+          <span>배치관리</span>
+          <hr />
+          <span>서버관리</span>
+          <hr />
+          <span>방문자관리</span>
           <hr />
           
         </Accordion.Body>

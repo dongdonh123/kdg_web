@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../css/content-ctn3.css';
+import '../../css/content-ctn3.css';
 import Accordion from 'react-bootstrap/Accordion';
 import Modal from 'react-modal';
-import Button from '../components/Button_.js';
-import { GridContainer, FormItem, Label, Input, ButtonContainer, InsertModalStyles, DeleteModalStyles, Required, LabelDiv } from '../css/Modalcss.js';
-import '../css/detail-div.css'
+import Button from '../../components/Button_.js';
+import { GridContainer, FormItem, Label, Input, ButtonContainer, InsertModalStyles, DeleteModalStyles, Required, LabelDiv } from '../../css/Modalcss.js';
+import '../../css/detail-div.css'
 
 
 
@@ -89,6 +89,7 @@ function MenuManagement() {
 
     } catch (error) {
       console.error('Error fetching menu list:', error);
+      alert("z");
     }
   };
 

@@ -3,6 +3,25 @@
   }
 /*메인 컨텐츠 설정 시작*/
 
+.mainList{
+  overflow: auto;
+
+}
+
+.resizer {
+  height: 10px; /* 크기 조절바의 너비 */
+  background-color: #ccc;
+  cursor: row-resize; /* 마우스 커서를 크기 조절 커서로 변경 */
+}
+
+.상세탭{
+  overflow: auto;
+  flex-grow: 1; /* 하단 div가 남은 공간을 차지하도록 설정 */
+
+}
+
+
+
 .메뉴명{
     border: red , 1px , solid;
     height: 40px;
@@ -21,14 +40,14 @@
   
   .메인그리드{
     border: red , 1px , solid;
-    height: calc(100vh - 200px - var(--header-height));
-    max-height: calc(100vh - 200px - var(--header-height));
+    height: 440px;
+    max-height: 440px;
     overflow-y: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
   }
 
   .TableBody{
-    height: calc(100vh - 200px - var(--header-height));
-    max-height: calc(100vh - 200px - var(--header-height));
+    height: 440px- 24px;
+    max-height: 440px- 24px;
     overflow-y: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
 
   }
