@@ -4,8 +4,8 @@ import '../../css/content-ctn3.css';
 import Accordion from 'react-bootstrap/Accordion';
 import Modal from 'react-modal';
 import Button from '../../components/Button_.js';
-import { GridContainer, FormItem, Label, Input, ButtonContainer, InsertModalStyles, DeleteModalStyles, Required, LabelDiv } from '../../css/Modalcss.js';
-import '../../css/detail-div.css'
+import { GridContainer, FormItem, Label, Input, ButtonContainer, InsertModalStyles, DeleteModalStyles, Required, LabelDiv } from '../../css/componunt/Modalcss.js';
+
 
 
 
@@ -89,7 +89,6 @@ function MenuManagement() {
 
     } catch (error) {
       console.error('Error fetching menu list:', error);
-      alert("z");
     }
   };
 
@@ -217,13 +216,13 @@ function MenuManagement() {
 
   return (
     <div>
-      <div className="메뉴명">
+      <div className="tittle-ctn3">
         <div>메뉴관리</div>
       </div>
-      <div className="메인컨텐츠">
-        <div className="왼쪽트리">
-          <div className="타이틀영역"><div className="타이틀">메뉴트리</div><Button primary onClick={insertModalShow}>신규</Button></div>
-          <div className="메뉴트리컨텐츠">
+      <div className="maincontents-ctn3">
+        <div className="left-tree-ctn3">
+          <div className="title-div-ctn3"><span>메뉴트리</span><Button primary onClick={insertModalShow}>신규</Button></div>
+          <div className="contents-tree-ctn3">
           <Accordion alwaysOpen>
             {MenuTreeList.map((menu, index) => (
                 <Accordion.Item eventKey={index.toString()} key={menu.top_menu_id}>
@@ -246,52 +245,52 @@ function MenuManagement() {
           </div>
         </div>
 
-        <div className="오른쪽정보">
-          <div className="타이틀영역"><div className="타이틀">메뉴 상세정보</div><Button primary onClick={updateModalShow} >수정</Button> <Button primary onClick={deleteModalShow}>삭제</Button></div>
-          <div className="메뉴정보컨텐츠">
-            <div className="detail-item">
-              <div className="item-label">메뉴 ID</div>
-              <div className="item-value">{MenuDetail.menu_id ? MenuDetail.menu_id : '-'}</div>
+        <div className="right-details-ctn3">
+          <div className="title-div-ctn3"><span>메뉴 상세정보</span><Button primary onClick={updateModalShow} >수정</Button> <Button primary onClick={deleteModalShow}>삭제</Button></div>
+          <div className="contents-details-ctn3">
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">메뉴 ID</div>
+              <div className="item-value-ctn3">{MenuDetail.menu_id ? MenuDetail.menu_id : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">메뉴 CODE</div>
-              <div className="item-value">{MenuDetail.menu_code ? MenuDetail.menu_code : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">메뉴 CODE</div>
+              <div className="item-value-ctn3">{MenuDetail.menu_code ? MenuDetail.menu_code : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">메뉴 명</div>
-              <div className="item-value">{MenuDetail.menu_name ? MenuDetail.menu_name : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">메뉴 명</div>
+              <div className="item-value-ctn3">{MenuDetail.menu_name ? MenuDetail.menu_name : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">메뉴 순서</div>
-              <div className="item-value">{MenuDetail.menu_seq ? MenuDetail.menu_seq : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">메뉴 순서</div>
+              <div className="item-value-ctn3">{MenuDetail.menu_seq ? MenuDetail.menu_seq : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">상위 메뉴</div>
-              <div className="item-value">{MenuDetail.org_menu_id ? MenuDetail.org_menu_id : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">상위 메뉴</div>
+              <div className="item-value-ctn3">{MenuDetail.org_menu_id ? MenuDetail.org_menu_id : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">사용 여부</div>
-              <div className="item-value">{MenuDetail.use_yn ? MenuDetail.use_yn : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">사용 여부</div>
+              <div className="item-value-ctn3">{MenuDetail.use_yn ? MenuDetail.use_yn : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">메뉴 URL</div>
-              <div className="item-value">{MenuDetail.menu_url ? MenuDetail.menu_url : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">메뉴 URL</div>
+              <div className="item-value-ctn3">{MenuDetail.menu_url ? MenuDetail.menu_url : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">생성일</div>
-              <div className="item-value">{MenuDetail.create_dt ? MenuDetail.create_dt : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">생성일</div>
+              <div className="item-value-ctn3">{MenuDetail.create_dt ? MenuDetail.create_dt : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">생성자</div>
-              <div className="item-value">{MenuDetail.create_user ? MenuDetail.create_user : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">생성자</div>
+              <div className="item-value-ctn3">{MenuDetail.create_user ? MenuDetail.create_user : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">변경일</div>
-              <div className="item-value">{MenuDetail.modify_dt ? MenuDetail.modify_dt : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">변경일</div>
+              <div className="item-value-ctn3">{MenuDetail.modify_dt ? MenuDetail.modify_dt : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">변경자</div>
-              <div className="item-value">{MenuDetail.modify_user ? MenuDetail.modify_user : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">변경자</div>
+              <div className="item-value-ctn3">{MenuDetail.modify_user ? MenuDetail.modify_user : '-'}</div>
             </div>
           </div>  
         </div>
@@ -299,13 +298,12 @@ function MenuManagement() {
       </div>
       
       {/* 신규등록 모달창 */}
-      <Modal
-        isOpen={insertModalOpen}
-        onRequestClose={insertModalClose}
-        style={InsertModalStyles}
-        ariaHideApp={false}
-        contentLabel="Pop up Message"
-        shouldCloseOnOverlayClick={false}
+      <Modal isOpen={insertModalOpen} 
+             onRequestClose={insertModalClose} 
+             style={InsertModalStyles} 
+             ariaHideApp={false} 
+             contentLabel="Pop up Message" 
+             shouldCloseOnOverlayClick={false}
       >
         <div>
           <h2>메뉴 데이터 신규 등록</h2>

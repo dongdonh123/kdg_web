@@ -1,50 +1,33 @@
 :root {
     --header-height: 56px;
-  }
+}
 
 /*메인 컨텐츠 설정 시작*/
 
-.메뉴명{
+.title-ctn1{
     border: red , 1px , solid;
     height: 40px;
   
-  }
+}
   
-  .버튼{
-    border: red , 1px , solid;
-    height: 40px;
-  }
-  
-  .검색조건{
-    border: red , 1px , solid;
-    height: 40px;
-    text-align: right;  /* 텍스트 오른쪽 정렬 */
-    padding-right: 20px;  /* 여백 추가 (옵션) */
-  }
-  
-  .메인그리드{
-    border: red , 1px , solid;
-    height: calc(100vh - 160px - var(--header-height) );
-    max-height: calc(100vh - 160px - var(--header-height) ); /* 원하는 높이 설정 */
-    overflow-y: auto;
-  }
-  
-  
-  .페이지{
-    border: red , 1px , solid;
-    height: 40px;
-    display : flex;
-    flex-direction: row;
-  }
-  
-  .페이지 #left{
-    width: 50%;
-  }
+.cud_button-ctn1{
+  border: red , 1px , solid;
+  height: 40px;
+}
 
-  .페이지 #right{
-    width: 50%;
-    text-align: right;  /* 텍스트 오른쪽 정렬 */
-    padding-right: 10px;  /* 여백 추가 (옵션) */
-  }
+.read_button-ctn1{
+  border: red , 1px , solid;
+  height: 40px;
+  text-align: right;  /* 텍스트 오른쪽 정렬 */
+  padding-right: 20px;  /* 여백 추가 (옵션) */
+}
 
-  /*메인 컨텐츠 설정 끝*/
+.maincontent-ctn1{
+  border: red , 1px , solid;
+  height: calc(100vh - 160px - var(--header-height) );
+  max-height: calc(100vh - 160px - var(--header-height) ); /* 원하는 높이 설정 */
+  overflow-y: auto;
+}
+
+
+/*메인 컨텐츠 설정 끝*/

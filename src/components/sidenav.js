@@ -1,5 +1,6 @@
 import Accordion from 'react-bootstrap/Accordion';
 import { useNavigate } from 'react-router-dom';
+import '../css/componunt/sidenav.css';
 
 function Sidenav() {
   let navigate = useNavigate();
@@ -65,9 +66,7 @@ function Sidenav() {
           <hr />
           <span>사용자관리</span>
           <hr />
-          <span>메뉴관리</span>
-          <hr />
-          <span onClick={() => {navigate('/admin/menuManagement');}}>메뉴 관리</span>
+          <span onClick={() => {navigate('/admin/menuManagement');}}>메뉴관리</span>
           <hr />
           <span>권한관리</span>
           <hr />

@@ -1,0 +1,23 @@
+.accordion-body {
+    padding: 0;
+  }
+  
+  .accordion-body span {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: inline-block;
+    cursor: pointer; /* 마우스를 올렸을 때 손가락 모양 커서 표시 */
+    
+  }
+  
+  .accordion-body hr {
+    width: 100%;
+    margin: 0;
+    color: white;
+  }
+  
+  .accordion-item{
+      border: white
+  }

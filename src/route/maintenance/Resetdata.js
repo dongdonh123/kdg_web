@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../css/content-ctn3.css';
+import '../../css/content-ctn3.css';
 import Accordion from 'react-bootstrap/Accordion';
 import Modal from 'react-modal';
-import Button from '../components/Button_.js';
-import { ButtonContainer,DeleteModalStyles } from '../css/Modalcss.js';
-import '../css/detail-div.css'
-
-import '../css/detail-div.css'
+import Button from '../../components/Button_.js';
+import { ButtonContainer,DeleteModalStyles } from '../../css/componunt/Modalcss.js';
 
 
 function Resetdata() {
@@ -112,13 +109,13 @@ function Resetdata() {
 
   return (
     <div>
-      <div className="메뉴명">
+      <div className="tittle-ctn3">
         <div>데이터리셋</div>
       </div>
-      <div className="메인컨텐츠">
-      <div className="왼쪽트리">
-          <div className="타이틀영역"><div className="타이틀">메뉴트리</div></div>
-          <div className="메뉴트리컨텐츠">
+      <div className="maincontents-ctn3">
+      <div className="left-tree-ctn3">
+          <div className="title-div-ctn3"><span>메뉴트리</span></div>
+          <div className="contents-tree-ctn3">
           <Accordion alwaysOpen>
             {MenuTreeList.map((menu, index) => (
                 <Accordion.Item eventKey={index.toString()} key={menu.top_menu_id}>
@@ -140,37 +137,37 @@ function Resetdata() {
           </Accordion>
           </div>
         </div>
-        <div className="오른쪽정보">
-          <div className="타이틀영역"><div className="타이틀">데이터리셋 상세정보</div><Button primary onClick={deleteModalShow}>삭제</Button> <Button primary onClick={resetModalShow}>리셋</Button></div>
-          <div className="메뉴정보컨텐츠">
-            <div className="detail-item">
-              <div className="item-label">데이터초기화 ID</div>
-              <div className="item-value">{DataResetDatail && DataResetDatail.init_id ? DataResetDatail.init_id : '-'}</div>
+        <div className="right-details-ctn3">
+          <div className="title-div-ctn3"><span>데이터리셋 상세정보</span><Button primary onClick={deleteModalShow}>삭제</Button> <Button primary onClick={resetModalShow}>리셋</Button></div>
+          <div className="contents-details-ctn3">
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">데이터초기화 ID</div>
+              <div className="item-value-ctn3">{DataResetDatail && DataResetDatail.init_id ? DataResetDatail.init_id : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">메뉴 ID</div>
-              <div className="item-value">{DataResetDatail && DataResetDatail.menu_id ? DataResetDatail.menu_id : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">메뉴 ID</div>
+              <div className="item-value-ctn3">{DataResetDatail && DataResetDatail.menu_id ? DataResetDatail.menu_id : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">메뉴 명</div>
-              <div className="item-value">{DataResetDatail && DataResetDatail.menu_name ? DataResetDatail.menu_name : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">메뉴 명</div>
+              <div className="item-value-ctn3">{DataResetDatail && DataResetDatail.menu_name ? DataResetDatail.menu_name : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">테이블 명</div>
-              <div className="item-value">{DataResetDatail && DataResetDatail.table_id ? DataResetDatail.table_id : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">테이블 명</div>
+              <div className="item-value-ctn3">{DataResetDatail && DataResetDatail.table_id ? DataResetDatail.table_id : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">초기화 데이터 수</div>
-              <div className="item-value">{DataResetDatail && DataResetDatail.data_ctn ? DataResetDatail.data_ctn : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">초기화 데이터 수</div>
+              <div className="item-value-ctn3">{DataResetDatail && DataResetDatail.data_ctn ? DataResetDatail.data_ctn : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">현재 데이터 수</div>
-              <div className="item-value">{current_cnt !== null && current_cnt !== undefined ? current_cnt : '-'}</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">현재 데이터 수</div>
+              <div className="item-value-ctn3">{current_cnt !== null && current_cnt !== undefined ? current_cnt : '-'}</div>
             </div>
-            <div className="detail-item">
-              <div className="item-label">리셋 SQL</div>
+            <div className="detail-item-ctn3">
+              <div className="item-label-ctn3">리셋 SQL</div>
             </div>
-            <div className="리셋SQL">{DataResetDatail && DataResetDatail.init_sql ? (<pre>{DataResetDatail.init_sql}</pre>) : '-'}</div>
+            <div className="resetSQL">{DataResetDatail && DataResetDatail.init_sql ? (<pre>{DataResetDatail.init_sql}</pre>) : '-'}</div>
           </div>
         </div>
 

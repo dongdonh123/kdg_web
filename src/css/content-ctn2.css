@@ -3,64 +3,114 @@
   }
 /*메인 컨텐츠 설정 시작*/
 
-.mainList{
-  overflow: auto;
-
+.content_container-ctn2 {
+  height: calc(100vh - var(--header-height));
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.resizer {
+.메뉴명-ctn2{
+  border: red , 1px , solid;
+  height: 40px;
+}
+
+.버튼-ctn2{
+  border: red , 1px , solid;
+  height: 40px;
+}
+  
+.검색조건-ctn2{
+  border: red , 1px , solid;
+  height: 40px;
+  display : flex;
+  flex-direction: row;
+  padding-right: 20px;  /* 여백 추가 (옵션) */
+}
+
+.메인그리드-ctn2{
+  border: red , 1px , solid;
+  flex-grow: 1;
+  overflow-y: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
+  
+}
+
+.TableBody-ctn2{
+  overflow-y: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
+}
+
+.페이지-ctn2{
+  border: red , 1px , solid;
+  height: 40px;
+  display : flex;
+  flex-direction: row;
+}
+
+.resizer-ctn2 {
   height: 10px; /* 크기 조절바의 너비 */
   background-color: #ccc;
   cursor: row-resize; /* 마우스 커서를 크기 조절 커서로 변경 */
 }
 
-.상세탭{
+.상세탭-ctn2{
   overflow: auto;
-  flex-grow: 1; /* 하단 div가 남은 공간을 차지하도록 설정 */
+  flex-grow: 1; 
+}
 
+.페이지-ctn2 #left{
+  width: 50%;
+}
+
+.페이지-ctn2 #right{
+  width: 50%;
+  text-align: right;  /* 텍스트 오른쪽 정렬 */
+  padding-right: 10px;  /* 여백 추가 (옵션) */
+}
+
+.검색조건-ctn2 #left{
+  padding-left: 10px;
+  width: 50%;
+}
+
+.검색조건-ctn2 #right{
+  width: 50%;
+  text-align: right;  /* 텍스트 오른쪽 정렬 */
 }
 
 
 
-.메뉴명{
-    border: red , 1px , solid;
-    height: 40px;
-  
-  }
-  
-  .버튼{
-    border: red , 1px , solid;
-    height: 40px;
-  }
-  
-  .검색조건{
-    border: red , 1px , solid;
-    height: 40px;
-  }
-  
-  .메인그리드{
-    border: red , 1px , solid;
-    height: 440px;
-    max-height: 440px;
-    overflow-y: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
-  }
-
-  .TableBody{
-    height: 440px- 24px;
-    max-height: 440px- 24px;
-    overflow-y: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
-
-  }
-  
-  .페이지{
-    border: red , 1px , solid;
-    height: 40px;
-  }
-  
-  .상세보기{
-    border: red , 1px , solid;
-    height: 40px;
-  }
 
   
   /*메인 컨텐츠 설정 끝*/
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    text-align: left;
+  }
+  
+  td {
+    padding: 8px 12px;
+  }
+  
+
+
+
+.TableBody-ctn2 tr:nth-child(even) {
+  background-color: none;
+}
+
+.TableBody-ctn2 tr:nth-child(odd) {
+  background-color: #f3f7fd;
+}
+
+  /* 테이블 행에 마우스를 올렸을 때 */
+.TableBody-ctn2 tr:hover {
+  background-color: #deeeff; /* 옅은 노란색 */
+}
+
+/* 테이블 행이 선택되었을 때 (예를 들어, 클릭 시) */
+.TableBody-ctn2 tr.selected {
+  background-color: #deeeff; /* 옅은 노란색 */
+}

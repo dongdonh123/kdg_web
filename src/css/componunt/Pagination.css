@@ -1,0 +1,16 @@
+.페이지{
+    border: red , 1px , solid;
+    height: 40px;
+    display : flex;
+    flex-direction: row;
+  }
+  
+  .페이지 #left{
+    width: 50%;
+  }
+  
+  .페이지 #right{
+    width: 50%;
+    text-align: right;  /* 텍스트 오른쪽 정렬 */
+    padding-right: 10px;  /* 여백 추가 (옵션) */
+  }

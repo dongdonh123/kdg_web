@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import '../css/content-ctn1.css';
-import '../css/communityBoard.css';
+import Pagination from '../../components/Pagination';
+import '../../css/content-ctn1.css';
+import '../../css/communityBoard.css';
 
 function CommunityBoard() {
   const [boardList, setBoardList] = useState([]);
@@ -10,9 +11,7 @@ function CommunityBoard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(50);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
-
   const [showFilters, setShowFilters] = useState(false); //검색조건 영역 
-
   const [isAllChecked, setIsAllChecked] = useState(false); //체크박스
   const [checkedItems, setCheckedItems] = useState([]); //체크박스
 
@@ -34,8 +33,6 @@ function CommunityBoard() {
     }
   };
 
-
-
   const fetchBoardList = async (page_no, page_cnt) => {
     try {
       const response = await axios.get(`http://localhost:8080/api/board?page_no=${page_no}&page_cnt=${page_cnt}`);
@@ -47,7 +44,6 @@ function CommunityBoard() {
     }
   };
 
- 
   useEffect(() => {
     if (isFirstLoad) {
       
@@ -56,10 +52,8 @@ function CommunityBoard() {
     fetchBoardList(currentPage, itemsPerPage);
   }, [currentPage,itemsPerPage]); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 호출
 
-  const totalPages = otherInformation.max_page_no || 1;
-
   const handlePageChange = (newPage) => {
-    if (newPage > 0 && newPage <= totalPages) {
+    if (newPage > 0 && newPage <= otherInformation.max_page_no || 1) {
       setCurrentPage(newPage);
     }
   };
@@ -73,25 +67,10 @@ function CommunityBoard() {
     fetchBoardList(currentPage, itemsPerPage);
   };
 
-
-  const pagelist = () => {
-    let pages = [];
-    let start = Math.max(1, (Math.floor((currentPage - 1) / 10) * 10) + 1); // 시작 페이지
-    let end = Math.min(start + 9, totalPages); // 끝 페이지는 최대 totalPages까지
-    for (let i = start; i <= end; i++) {
-      pages.push(
-        <Button key={i} onClick={() => handlePageChange(i)} disabled={i === currentPage}>
-          {i}
-        </Button>
-      );
-    }
-    return pages;
-  };
-
   const toggleFilters = () => {
     setShowFilters(!showFilters);
-    const filtersDiv = document.getElementById('검색조건');
-    const MainsDiv = document.getElementById('메인그리드'); 
+    const filtersDiv = document.getElementById('read_button');
+    const MainsDiv = document.getElementById('maincontent'); 
     if (filtersDiv) {
       filtersDiv.style.height = showFilters ? '40px' : '80px';
       MainsDiv.style.height = showFilters ? 'calc(100vh - 216px)' : 'calc(100vh - 256px)';
@@ -100,11 +79,11 @@ function CommunityBoard() {
 
   return (
     <div>
-      <div className="메뉴명">
+      <div className="title-ctn1">
         <div>커뮤니티게시판</div><div></div>
       </div>
-      <div className="버튼"><Button>신규</Button><Button>수정</Button><Button>삭제</Button></div>
-      <div className="검색조건" id="검색조건">
+      <div className="cud_button-ctn1"><Button>신규</Button><Button>수정</Button><Button>삭제</Button></div>
+      <div className="read_button-ctn1" id="read_button">
         <button className="toggle-button" onClick={toggleFilters}>
           필터
         </button>
@@ -117,7 +96,7 @@ function CommunityBoard() {
           </div>
         )}
       </div>
-      <div className="메인그리드" id="메인그리드">
+      <div className="maincontent-ctn1" id="maincontent">
         <table className ="MainTable">
           <thead className="TableHeader">
             <tr>
@@ -141,31 +120,8 @@ function CommunityBoard() {
           </tbody>
         </table>
       </div>
-      <div className="페이지">
-        <div id="left">
-          페이지당 줄 수:
-          <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-            <option value="200">200</option>
-            <option value="1000">1000</option>
-          </select>
-        </div>
-        <div id="right">
-        {isFirstLoad ?  null :(
-    <>
-      {otherInformation.current_page_data_min}-{(otherInformation.page_no === otherInformation.max_page_no) ? otherInformation.total_row : otherInformation.current_page_data_max} of {otherInformation.total_row} items 
-    </>
-  )}        <Button onClick={() => handlePageChange(1)} disabled={currentPage === 1}>&lt;&lt;</Button>
-           <Button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>&lt;</Button>
-          {pagelist()}
-          <Button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>&gt;</Button>
-          <Button onClick={() => handlePageChange(otherInformation.max_page_no)} disabled={currentPage === totalPages}>&gt;&gt;</Button> 
-        </div>
-      </div>
+      <Pagination currentPage={currentPage} totalPages={otherInformation.max_page_no || 1} onPageChange={handlePageChange} onItemsPerPageChange={handleItemsPerPageChange} itemsPerPage={itemsPerPage} totalItems={otherInformation} isFirstLoad={isFirstLoad}/>
+      
     </div>
   );
 }

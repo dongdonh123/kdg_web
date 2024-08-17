@@ -43,43 +43,13 @@
   overflow: auto;
 }
 
-#resizer {
+.resizer-column {
   width: 10px; /* 크기 조절바의 너비 */
   background-color: #ccc;
   cursor: ew-resize; /* 마우스 커서를 크기 조절 커서로 변경 */
 }
 
-/*사이드바 설정 시작*/
-.accordion-body {
-  padding: 0;
-}
 
-.accordion-body span {
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  display: inline-block;
-  cursor: pointer; /* 마우스를 올렸을 때 손가락 모양 커서 표시 */
-  
-}
-
-.accordion-body hr {
-  width: 100%;
-  margin: 0;
-  color: white;
-}
-
-.accordion-item{
-    border: white
-}
-
-
-/*사이드바 설정 끝*/
-
-.MainTable{
-    width: 100%;
-}
 
 
 
