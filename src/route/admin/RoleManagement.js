@@ -2,38 +2,117 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import '../../css/content-ctn2.css';
+import Resizer from '../../components/ResizerRow'; // Resizer 컴포넌트 가져오기
+import Pagination from '../../components/Pagination';
+import '../../css/mainTable/RoleManagement.css'
+import RoleDetailTable from '../../detailtap/RoleDetailTable';
+import { GridContainer, FormItem, Label, Input, ButtonContainer, InsertModalStyles, DeleteModalStyles, Required, LabelDiv } from '../../css/componunt/Modalcss.js';
+import Modal from 'react-modal';
 
 function RoleManagement() {
+  
+  // 모달처리 시작
+  const [insertModalOpen, setInsertModalOpen] = useState(false);
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  
+  const insertModalShow = () => setInsertModalOpen(true);
+  const insertModalClose = () => setInsertModalOpen(false);
+  const updateModalShow = () => setUpdateModalOpen(true);
+  const updateModalClose = () => setUpdateModalOpen(false);
+  const deleteModalShow = () => setDeleteModalOpen(true);
+  const deleteModalClose = () => setDeleteModalOpen(false);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setRoleDetail({
+        ...RoleDetail,
+        [name]: value,
+    });
+  };
 
-  // 리사이저 설정 시작
+  //신규등록 api 호출부분 
+  const handleInsert = async (event) => {
+    event.preventDefault();
+
+    const roleCode = event.target.role_code.value.trim();
+    const roleName = event.target.role_name.value.trim();
+    const meta_use_yn = event.target.meta_use_yn.checked ? 'Y' : 'N'; //체크박스의 체크 여부 확인
+    if (!roleCode) {
+      alert('역할코드는 필수값입니다.')
+      return;
+    }
+
+    if (!roleName) {
+      alert('역할명은 필수값입니다.');
+      return;
+    }
+
+    const formData = new FormData(event.target);
+    formData.set('meta_use_yn', meta_use_yn); // 체크박스의 값을 'Y' 또는 'N'으로 변경
+
+    const data = Object.fromEntries(formData.entries());
+    try {
+      const response = await axios.post('http://localhost:8080/api/admin/role', data);
+      alert(response.data.resultmessage);
+      insertModalClose();
+      fetchRoleList();  // 데이터 갱신
+    } catch (error) {
+      console.error('역할 신규 등록 중 오류 발생:', error);
+      alert('서버 오류로 인해 역할 신규 등록을 실패했습니다.');
+    }
+  };
+
+  //수정등록 api 호출부분 
+  const handleUpdate = async (event) => {
+    event.preventDefault();
+
+    const roleCode = event.target.role_code.value.trim();
+    const roleName = event.target.role_name.value.trim();
+    const meta_use_yn = event.target.meta_use_yn.checked ? 'Y' : 'N'; //체크박스의 체크 여부 확인
+    if (!roleCode) {
+      alert('역할코드는 필수값입니다.')
+      return;
+    }
+
+    if (!roleName) {
+      alert('역할명은 필수값입니다.');
+      return;
+    }
+
+    const formData = new FormData(event.target);
+    formData.set('meta_use_yn', meta_use_yn); // 체크박스의 값을 'Y' 또는 'N'으로 변경
+
+    const data = Object.fromEntries(formData.entries());
+    try {
+      const response = await axios.put(`http://localhost:8080/api/admin/role/${RoleDetail.role_id}`, data);
+      alert(response.data.resultmessage);
+      updateModalClose();
+      fetchRoleList();  
+    } catch (error) {
+      console.error('역할 수정 등록 중 오류 발생:', error);
+      alert('서버 오류로 인해 역할 수정 등록을 실패했습니다.');
+    }
+  };
+
+  //삭제 api 호출 부분
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/api/admin/role/${RoleDetail.role_id}`);
+      alert(response.data.resultmessage);
+      fetchRoleList();  // 데이터 갱신
+      deleteModalClose();
+    } catch (error) {
+      console.error('역할 삭제 중 오류 발생:', error);
+      alert('서버 오류로 인해 역할 삭제를 실패했습니다.');
+    }
+  };
+
+  // 모달처리 끝
 
   const containerRef = useRef(null);
   const topDivRef = useRef(null);
   const bottomDivRef = useRef(null);
-  const [isResizing, setIsResizing] = useState(false);
-
-  const handleMouseDown = () => {
-    setIsResizing(true);
-    document.body.style.cursor = 'row-resize';
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isResizing) return;
-
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const topHeight = e.clientY - containerRect.top;
-    const bottomHeight = containerRect.bottom - e.clientY;
-
-    topDivRef.current.style.height = `${topHeight}px`;
-    bottomDivRef.current.style.height = `${bottomHeight}px`;
-  };
-
-  const handleMouseUp = () => {
-    setIsResizing(false);
-    document.body.style.cursor = 'default';
-  };
-  // 리사이저 설정 끝
 
   const [roleList, setRoleList] = useState([]);
   const [otherInformation, setOtherInformation] = useState({});
@@ -71,7 +150,13 @@ function RoleManagement() {
   //메인 리스트 가져오기
   const fetchRoleList = async (page_no, page_cnt, role_name) => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/admin/role?page_no=${page_no}&page_cnt=${page_cnt}&role_name=${role_name}`);
+      // 기본 URL 설정
+      let url = `http://localhost:8080/api/admin/role?page_no=${page_no}&page_cnt=${page_cnt}`;
+      // role_name이 정의되어 있고 빈 값이 아닌 경우에만 URL에 추가
+      if (role_name !== undefined && role_name !== null && role_name.trim() !== '') {
+        url += `&role_name=${encodeURIComponent(role_name)}`;
+      }
+      const response = await axios.get(url);
       setRoleList(response.data.roleList);
       setOtherInformation(response.data.otherInformation);
       setIsFirstLoad(false);
@@ -99,10 +184,8 @@ function RoleManagement() {
     fetchRoleList(currentPage, itemsPerPage);
   }, [currentPage,itemsPerPage]); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 호출
 
-  const totalPages = otherInformation.max_page_no || 1;
-
   const handlePageChange = (newPage) => {
-    if (newPage > 0 && newPage <= totalPages) {
+    if (newPage > 0 && newPage <= otherInformation.max_page_no || 1) {
       setCurrentPage(newPage);
     }
   };
@@ -113,159 +196,160 @@ function RoleManagement() {
   };
 
   const handleSearch = () => {
-    fetchRoleList(currentPage, itemsPerPage, role_name);
+    fetchRoleList(currentPage, itemsPerPage);
   };
-
-  const pagelist = () => {
-    let pages = [];
-    let start = Math.max(1, (Math.floor((currentPage - 1) / 10) * 10) + 1); // 시작 페이지
-    let end = Math.min(start + 9, totalPages); // 끝 페이지는 최대 totalPages까지
-    for (let i = start; i <= end; i++) {
-      pages.push(
-        <Button key={i} onClick={() => handlePageChange(i)} disabled={i === currentPage}>
-          {i}
-        </Button>
-      );
-    }
-    return pages;
-  };
-
-
 
   return (
     <div>
-      <div className="content_container-ctn2" ref={containerRef} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
-        <div className="메뉴명-ctn2"><div>역할관리</div></div>
-        <div className="버튼-ctn2"><Button>신규</Button><Button>수정</Button><Button>삭제</Button></div>
-        <div className="검색조건-ctn2" id="검색조건">
+      <div className="content_container-ctn2" ref={containerRef}>
+        <div className="title-ctn2"><div>역할관리</div></div>
+        <div className="cud_button-ctn2"><Button onClick={insertModalShow}>신규</Button><Button onClick={updateModalShow}>수정</Button><Button onClick={deleteModalShow}>삭제</Button></div>
+        <div className="read_button-ctn2" id="검색조건">
           <div id="left">역할명 : <input type="text" value={role_name} placeholder="역할명 검색" onChange={(e) => setRole_name(e.target.value)}/></div>
           <div id="right"><Button onClick={handleSearch}>검색</Button></div>
         </div>
-        <div className="메인그리드-ctn2" id="메인그리드" >
+        <div className="maincontent-ctn2" id="메인그리드" >
           <table className ="MainTable">
             <thead className="TableHeader">
               <tr>
-                <th className="number-column">번호</th>
-                <th className="title-column">역할코드</th>
-                <th className="author-column">역할명</th>
-                <th className="date-column">최초등록자</th>
-                <th className="date-column">최초등록일시</th>
-                <th className="date-column">최종변경자</th>
+                <th className="role-num">번호</th>
+                <th className="role-code">역할코드</th>
+                <th className="role-name">역할명</th>
+                <th className="role-createuser">최초등록자</th>
+                <th className="role-createdt">최초등록일시</th>
+                <th className="role-modifyuser">최종변경자</th>
               </tr>
             </thead>
             <tbody className="TableBody-ctn2" id ="TableBody" ref={topDivRef}>
               {roleList.map((role, index) => (
                 <tr key={role.role_id} onClick={() => handleRowClick(index, role.role_id)} className={selectedRow === index ? 'selected' : ''}>
-                  <td>{(currentPage - 1) * itemsPerPage + index + 1}</td> {/* 1부터 시작하는 화면 번호 */}
-                  <td>{role.role_code}</td>
-                  <td>{role.role_name}</td>
-                  <td>{role.create_user}</td>
-                  <td>{new Date(role.create_dt).toLocaleString()}</td>
-                  <td>{role.modify_user}</td>
+                  <td className="role-num">{(currentPage - 1) * itemsPerPage + index + 1}</td> {/* 1부터 시작하는 화면 번호 */}
+                  <td className="role-code">{role.role_code}</td>
+                  <td className="role-name">{role.role_name}</td>
+                  <td className="role-createuser">{role.create_user}</td>
+                  <td className="role-createdt">{new Date(role.create_dt).toLocaleString()}</td>
+                  <td className="role-modifyuser">{role.modify_user}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <div className="페이지-ctn2">
-          <div id="left">
-            페이지당 줄 수:
-            <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-              <option value="200">200</option>
-              <option value="1000">1000</option>
-            </select>
-          </div>
-          <div id="right">
-            {isFirstLoad ?  null :(<>{otherInformation.current_page_data_min}-{(otherInformation.page_no === otherInformation.max_page_no) ? otherInformation.total_row : otherInformation.current_page_data_max} of {otherInformation.total_row} items </>)}        
-            <Button onClick={() => handlePageChange(1)} disabled={currentPage === 1}>&lt;&lt;</Button>
-            <Button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>&lt;</Button>
-            {pagelist()}
-            <Button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>&gt;</Button>
-            <Button onClick={() => handlePageChange(otherInformation.max_page_no)} disabled={currentPage === totalPages}>&gt;&gt;</Button> 
-          </div>
-        </div>
-        <div className="resizer-ctn2" onMouseDown={handleMouseDown}></div>
-        <div className="상세탭-ctn2" ref={bottomDivRef}>
+        <Pagination currentPage={currentPage} totalPages={otherInformation.max_page_no || 1} onPageChange={handlePageChange} onItemsPerPageChange={handleItemsPerPageChange} itemsPerPage={itemsPerPage} totalItems={otherInformation} isFirstLoad={isFirstLoad}/>
+        <Resizer containerRef={containerRef} topDivRef={topDivRef} bottomDivRef={bottomDivRef} />
+        <div className="detailstap-ctn2" ref={bottomDivRef}>
           <div>상세정보</div>
-          <table>
-            <tbody>
-              <tr>
-                <td>역할ID</td>
-                <td>{RoleDetail.role_id ? RoleDetail.role_id : '-'}</td>
-                <td>역할코드</td>
-                <td>{RoleDetail.role_code ? RoleDetail.role_code : '-'}</td>
-              </tr>
-              <tr>
-                <td>역할명</td>
-                <td>{RoleDetail.role_name ? RoleDetail.role_name : '-'}</td>
-                <td>메타사용YN</td>
-                <td>{RoleDetail.meta_use_yn ? RoleDetail.meta_use_yn : '-'}</td>
-              </tr>
-              <tr>
-                <td>최초등록자</td>
-                <td>{RoleDetail.create_dt ? RoleDetail.create_dt : '-'}</td>
-                <td>최초등록일시</td>
-                <td>{RoleDetail.create_user ? RoleDetail.create_user : '-'}</td>
-              </tr>
-              <tr>
-                <td>최종변경자</td>
-                <td>{RoleDetail.modify_dt ? RoleDetail.modify_dt : '-'}</td>
-                <td>최종변경일시</td>
-                <td>{RoleDetail.modify_user ? RoleDetail.modify_user : '-'}</td>
-              </tr>
-            </tbody>
-          </table>
-          {/* <div className="detail-item">
-            <div className="item-label">메뉴 ID</div>
-            <div className="item-value">{RoleDetail.menu_id ? RoleDetail.menu_id : '-'}</div>
-          </div>
-          <div className="detail-item">
-            <div className="item-label">메뉴 CODE</div>
-            <div className="item-value">{RoleDetail.menu_code ? RoleDetail.menu_code : '-'}</div>
-          </div>
-          <div className="detail-item">
-            <div className="item-label">메뉴 명</div>
-            <div className="item-value">{RoleDetail.menu_name ? RoleDetail.menu_name : '-'}</div>
-          </div>
-          <div className="detail-item">
-            <div className="item-label">메뉴 순서</div>
-            <div className="item-value">{RoleDetail.menu_seq ? RoleDetail.menu_seq : '-'}</div>
-          </div>
-          <div className="detail-item">
-            <div className="item-label">상위 메뉴</div>
-            <div className="item-value">{RoleDetail.org_menu_id ? RoleDetail.org_menu_id : '-'}</div>
-          </div>
-          <div className="detail-item">
-            <div className="item-label">사용 여부</div>
-            <div className="item-value">{RoleDetail.use_yn ? RoleDetail.use_yn : '-'}</div>
-          </div>
-          <div className="detail-item">
-            <div className="item-label">메뉴 URL</div>
-            <div className="item-value">{RoleDetail.menu_url ? RoleDetail.menu_url : '-'}</div>
-          </div>
-          <div className="detail-item">
-            <div className="item-label">생성일</div>
-            <div className="item-value">{RoleDetail.create_dt ? RoleDetail.create_dt : '-'}</div>
-          </div>
-          <div className="detail-item">
-            <div className="item-label">생성자</div>
-            <div className="item-value">{RoleDetail.create_user ? RoleDetail.create_user : '-'}</div>
-          </div>
-          <div className="detail-item">
-            <div className="item-label">변경일</div>
-            <div className="item-value">{RoleDetail.modify_dt ? RoleDetail.modify_dt : '-'}</div>
-          </div>
-          <div className="detail-item">
-            <div className="item-label">변경자</div>
-            <div className="item-value">{RoleDetail.modify_user ? RoleDetail.modify_user : '-'}</div>
-          </div> */}
+          <RoleDetailTable RoleDetail={RoleDetail} />
         </div>
       </div>
+
+
+      {/* 신규등록 모달창 */}
+      <Modal isOpen={insertModalOpen} 
+             onRequestClose={insertModalClose} 
+             style={InsertModalStyles} 
+             ariaHideApp={false} 
+             contentLabel="Pop up Message" 
+             shouldCloseOnOverlayClick={false}
+      >
+        <div>
+          <h2>역할 신규 등록</h2>
+          <form onSubmit={handleInsert}>
+            <GridContainer>
+                <FormItem key="1">
+                  <LabelDiv>
+                    <Label htmlFor="역할코드">역할코드</Label>
+                    <Required>*</Required>
+                  </LabelDiv>
+                  <Input type="text" id="역할코드" name="role_code"/>
+                </FormItem>
+                <FormItem key="2">
+                  <LabelDiv>
+                    <Label htmlFor="역할명">역할명</Label>
+                    <Required>*</Required>
+                  </LabelDiv>
+                  <Input type="text" id="역할명" name="role_name"/>
+                </FormItem>
+                <FormItem key="3">
+                  <LabelDiv>
+                    <Label htmlFor="메타사용여부">메타사용여부</Label>
+                  </LabelDiv>
+                    <Input type="checkbox" id="메타사용여부" name="meta_use_yn"/>
+                </FormItem>
+            </GridContainer>
+            <ButtonContainer>
+              <Button primary type="submit">등록</Button>
+              <Button onClick={insertModalClose}>닫기</Button>
+            </ButtonContainer>
+          </form>
+        </div>
+      </Modal>
+
+
+      {/* 수정 모달창 */}
+      <Modal
+        isOpen={updateModalOpen}
+        onRequestClose={updateModalClose}
+        style={InsertModalStyles}
+        ariaHideApp={false}
+        contentLabel="Pop up Message"
+        shouldCloseOnOverlayClick={false}
+      >
+        <div>
+          <h2>역할 수정 등록</h2>
+          <form onSubmit={handleUpdate}>
+            <GridContainer>
+                <FormItem key="1">
+                  <LabelDiv>
+                    <Label htmlFor="역할코드">역할코드</Label>
+                    <Required>*</Required>
+                  </LabelDiv>
+                  <Input type="text" id="역할코드" name="role_code" value={RoleDetail.role_code} onChange={handleInputChange}/>
+                </FormItem>
+                <FormItem key="2">
+                  <LabelDiv>
+                    <Label htmlFor="역할명">역할명</Label>
+                    <Required>*</Required>
+                  </LabelDiv>
+                  <Input type="text" id="역할명" name="role_name" value={RoleDetail.role_name} onChange={handleInputChange}/>
+                </FormItem>
+                <FormItem key="3">
+                  <LabelDiv>
+                    <Label htmlFor="메타사용여부">메타사용여부</Label>
+                  </LabelDiv>
+                    <Input type="checkbox" id="메타사용여부" name="meta_use_yn" value={RoleDetail.meta_use_yn} />
+                </FormItem>
+            </GridContainer>
+            <ButtonContainer>
+              <Button primary type="submit">수정</Button>
+              <Button onClick={updateModalClose}>닫기</Button>
+            </ButtonContainer>
+          </form>
+        </div>
+      </Modal>
+
+      {/* 삭제 모달창 */}
+      <Modal
+        isOpen={deleteModalOpen}
+        onRequestClose={deleteModalClose}
+        style={DeleteModalStyles}
+        ariaHideApp={false}
+        contentLabel="Pop up Message"
+        shouldCloseOnOverlayClick={false}
+      >
+        <div>
+          <h2>역할 삭제</h2>
+          "{RoleDetail.role_code}" "{RoleDetail.role_name}" 역할을 삭제하시겠습니까?
+          <ButtonContainer>
+            <Button primary onClick={handleDelete}>삭제</Button>
+            <Button onClick={deleteModalClose}>닫기</Button>
+          </ButtonContainer>
+        </div>
+      </Modal>
+
+
+
+
+
     </div>
     
   );

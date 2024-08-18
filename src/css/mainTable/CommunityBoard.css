@@ -1,0 +1,23 @@
+.MainTable{
+    width: 100%
+}
+
+th.board-checkbox,td.board-checkbox {
+    width: 5%;
+}
+
+th.board-number,td.board-number {
+    width: 5%;
+}
+
+th.board-title,td.board-title {
+    width: 40%;
+}
+
+th.board-createuser,td.board-createuser {
+    width: 10%;
+}
+
+th.board-createdt,td.board-createdtn {
+    width: 20%;
+}

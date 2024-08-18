@@ -1,7 +1,3 @@
-:root {
-    --header-height: 56px;
-  }
-/*메인 컨텐츠 설정 시작*/
 
 .content_container-ctn2 {
   height: calc(100vh - var(--header-height));
@@ -10,92 +6,41 @@
   flex-direction: column;
 }
 
-.메뉴명-ctn2{
+.title-ctn2{
   border: red , 1px , solid;
   height: 40px;
 }
 
-.버튼-ctn2{
+.cud_button-ctn2{
   border: red , 1px , solid;
   height: 40px;
 }
   
-.검색조건-ctn2{
+.read_button-ctn2{
   border: red , 1px , solid;
   height: 40px;
-  display : flex;
-  flex-direction: row;
   padding-right: 20px;  /* 여백 추가 (옵션) */
-}
 
-.메인그리드-ctn2{
-  border: red , 1px , solid;
-  flex-grow: 1;
-  overflow-y: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
-  
-}
-
-.TableBody-ctn2{
-  overflow-y: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
-}
-
-.페이지-ctn2{
-  border: red , 1px , solid;
-  height: 40px;
   display : flex;
   flex-direction: row;
 }
 
-.resizer-ctn2 {
-  height: 10px; /* 크기 조절바의 너비 */
-  background-color: #ccc;
-  cursor: row-resize; /* 마우스 커서를 크기 조절 커서로 변경 */
-}
-
-.상세탭-ctn2{
-  overflow: auto;
-  flex-grow: 1; 
-}
-
-.페이지-ctn2 #left{
-  width: 50%;
-}
-
-.페이지-ctn2 #right{
-  width: 50%;
-  text-align: right;  /* 텍스트 오른쪽 정렬 */
-  padding-right: 10px;  /* 여백 추가 (옵션) */
-}
-
-.검색조건-ctn2 #left{
+.read_button-ctn2 #left{
   padding-left: 10px;
   width: 50%;
 }
 
-.검색조건-ctn2 #right{
+.read_button-ctn2 #right{
   width: 50%;
   text-align: right;  /* 텍스트 오른쪽 정렬 */
 }
 
-
-
-
+.maincontent-ctn2{
+  border: red , 1px , solid;
+  flex-grow: 2;
+  overflow-y: auto; /* 콘텐츠가 넘칠 경우 세로 스크롤 추가 */
   
-  /*메인 컨텐츠 설정 끝*/
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    text-align: left;
-  }
-  
-  td {
-    padding: 8px 12px;
-  }
-  
-
-
+}
 
 .TableBody-ctn2 tr:nth-child(even) {
   background-color: none;
@@ -114,3 +59,19 @@
 .TableBody-ctn2 tr.selected {
   background-color: #deeeff; /* 옅은 노란색 */
 }
+
+.detailstap-ctn2{
+  overflow: auto;
+  flex-grow: 1; 
+}
+
+
+.resizer-row {
+  height: 10px; /* 크기 조절바의 너비 */
+  background-color: #ccc;
+  cursor: row-resize; /* 마우스 커서를 크기 조절 커서로 변경 */
+}
+
+
+
+  

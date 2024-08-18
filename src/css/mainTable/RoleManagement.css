@@ -1,0 +1,29 @@
+.MainTable{
+    width: 100%
+}
+
+th.role-num,td.role-num {
+    width: 10%;
+}
+
+th.role-code,td.role-code {
+    width: 20%;
+}
+
+th.role-name,td.role-name {
+    width: 20%;
+}
+
+th.role-createuser,td.role-createuser {
+    width: 20%;
+}
+
+th.role-createdt,td.role-createdt {
+    width: 20%;
+}
+
+th.role-modifyuser,td.role-modifyuser {
+    width: 10%;
+}
+
+

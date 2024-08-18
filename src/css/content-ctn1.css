@@ -1,8 +1,3 @@
-:root {
-    --header-height: 56px;
-}
-
-/*메인 컨텐츠 설정 시작*/
 
 .title-ctn1{
     border: red , 1px , solid;
@@ -29,5 +24,21 @@
   overflow-y: auto;
 }
 
+.TableBody-ctn1 tr:nth-child(even) {
+  background-color: none;
+}
 
-/*메인 컨텐츠 설정 끝*/
+.TableBody-ctn1 tr:nth-child(odd) {
+  background-color: #f3f7fd;
+}
+
+  /* 테이블 행에 마우스를 올렸을 때 */
+.TableBody-ctn1 tr:hover {
+  background-color: #deeeff; /* 옅은 노란색 */
+}
+
+/* 테이블 행이 선택되었을 때 (예를 들어, 클릭 시) */
+.TableBody-ctn1 tr.selected {
+  background-color: #deeeff; /* 옅은 노란색 */
+}
+

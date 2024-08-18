@@ -144,12 +144,12 @@ function MenuManagement() {
     try {
       const response = await axios.post('http://localhost:8080/api/admin/menuMenegement', data);
       console.log('Response:', response.data);
-      alert('메뉴데이터를 등록 했습니다.');
+      alert(response.data.resultmessage);
       insertModalClose();
       fetchMenuTree();  // 데이터 갱신
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('메뉴데이터를 등록을 실패했습니다.');
+      console.error('메뉴 신규 등록 중 오류 발생:', error);
+      alert('서버 오류로 인해 메뉴 신규 등록을 실패했습니다.');
     }
   };
 
@@ -182,35 +182,27 @@ function MenuManagement() {
     const data = Object.fromEntries(formData.entries());
     try {
       const response = await axios.put(`http://localhost:8080/api/admin/menuMenegement/${menuInfo.menu_id}`, data);
-      console.log('Response:', response.data);
-      alert('메뉴데이터를 수정을 성공했습니다.');
+      alert(response.data.resultmessage);
       updateModalClose();
       fetchMenuTree();  // 왼쪽트리데이터 갱신
       fetchMenuDetail(); // 오른쪽상세데이터 갱신
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('메뉴데이터를 수정을 실패했습니다.');
+      console.error('메뉴 신규 등록 중 오류 발생:', error);
+      alert('서버 오류로 인해 메뉴 수정 등록을 실패했습니다.');
     }
   };
 
   //삭제 api 호출 부분
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/admin/menuMenegement/${menuInfo.menu_id}`, {
-        method: 'DELETE'
-      });
-
-      if (response.ok) {
-        alert('메뉴가 삭제되었습니다.');
-        // 추가적인 성공 처리 (예: 상태 업데이트, 모달 닫기 등)
-        fetchMenuTree();  // 데이터 갱신
-        deleteModalClose();
-      } else {
-        alert('메뉴 삭제에 실패했습니다.');
-      }
+      const response = await axios.delete(`http://localhost:8080/api/admin/menuMenegement/${menuInfo.menu_id}`);
+      alert(response.data.resultmessage);
+      // 추가적인 성공 처리 (예: 상태 업데이트, 모달 닫기 등)
+      fetchMenuTree();  // 데이터 갱신
+      deleteModalClose();
     } catch (error) {
-      console.error('삭제 중 오류 발생:', error);
-      alert('서버 오류로 인해 메뉴 삭제에 실패했습니다.');
+      console.error('메뉴 삭제 중 오류 발생:', error);
+      alert('서버 오류로 인해 메뉴 삭제를 실패했습니다.');
     }
   };
 

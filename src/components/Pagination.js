@@ -28,7 +28,7 @@ const Pagination = ({
   };
 
   return (
-    <div className="페이지">
+    <div className="pagediv">
       <div id="left">
         페이지당 줄 수:
         <select value={itemsPerPage} onChange={onItemsPerPageChange}>

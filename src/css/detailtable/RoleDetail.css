@@ -1,0 +1,13 @@
+.DetailTable-RoleDetail {
+    width: 100%;
+}
+
+.DetailTable-RoleDetail .label{
+    font-weight: bold;
+    width: 20%;
+    padding-left: 30px;
+}
+
+.DetailTable-RoleDetail .value{
+    width:  30%;
+}

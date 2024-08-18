@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import Pagination from '../../components/Pagination';
 import '../../css/content-ctn1.css';
-import '../../css/communityBoard.css';
+import '../../css/mainTable/CommunityBoard.css';
 
 function CommunityBoard() {
   const [boardList, setBoardList] = useState([]);
@@ -14,6 +14,7 @@ function CommunityBoard() {
   const [showFilters, setShowFilters] = useState(false); //검색조건 영역 
   const [isAllChecked, setIsAllChecked] = useState(false); //체크박스
   const [checkedItems, setCheckedItems] = useState([]); //체크박스
+  const [board_id, setBoard_id] = useState('');
 
   const handleAllCheck = () => {
     const newIsAllChecked = !isAllChecked;
@@ -77,6 +78,14 @@ function CommunityBoard() {
     }
   };
 
+  // 메인테이블 선택시 배경색 바꾸고 id 선택하기
+  const [selectedRow, setSelectedRow] = useState(null);
+
+  const handleRowClick = (index, board_id) => {
+    setBoard_id(board_id)
+    setSelectedRow(index);
+  };
+
   return (
     <div>
       <div className="title-ctn1">
@@ -100,21 +109,21 @@ function CommunityBoard() {
         <table className ="MainTable">
           <thead className="TableHeader">
             <tr>
-              <th className="checkbox-column"><input type="checkbox"  checked={isAllChecked} onChange={handleAllCheck}/></th>
-              <th className="number-column">번호</th>
-              <th className="title-column">제목</th>
-              <th className="author-column">작성자</th>
-              <th className="date-column">작성일시</th>
+              <th className="board-checkbox"><input type="checkbox"  checked={isAllChecked} onChange={handleAllCheck}/></th>
+              <th className="board-number">번호</th>
+              <th className="board-title">제목</th>
+              <th className="board-createuser">작성자</th>
+              <th className="board-createdt">작성일시</th>
             </tr>
           </thead>
-          <tbody className="TableBody" id ="TableBody">
+          <tbody className="TableBody-ctn1">
             {boardList.map((board, index) => (
-              <tr key={board.board_id}>
-                <td><input type="checkbox"  checked={checkedItems.includes(board.board_id)} onChange={() => handleCheck(board.board_id)}/></td>
-                <td>{(currentPage - 1) * itemsPerPage + index + 1}</td> {/* 1부터 시작하는 화면 번호 */}
-                <td> {board.board_title} <input type="hidden" value={board.board_id} /> {/* hidden으로 보관하는 board_id */} </td>
-                <td>{board.create_user}</td>
-                <td>{new Date(board.create_dt).toLocaleString()}</td>
+              <tr key={board.board_id} onClick={() => handleRowClick(index, board.board_id)} className={selectedRow === index ? 'selected' : ''}>
+                <td className="board-checkbox"><input type="checkbox"  checked={checkedItems.includes(board.board_id)} onChange={() => handleCheck(board.board_id)}/></td>
+                <td className="board-number">{(currentPage - 1) * itemsPerPage + index + 1}</td> {/* 1부터 시작하는 화면 번호 */}
+                <td className="board-title"> {board.board_title} <input type="hidden" value={board.board_id} /> {/* hidden으로 보관하는 board_id */} </td>
+                <td className="board-createuser">{board.create_user}</td>
+                <td className="board-createdt">{new Date(board.create_dt).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>
