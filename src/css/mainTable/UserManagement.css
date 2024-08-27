@@ -15,7 +15,7 @@ th.col3,td.col3 {
 }
 
 th.col4,td.col4 {
-    width: 10%;
+    width: 5%;
 }
 
 th.col5,td.col5 {
@@ -23,7 +23,7 @@ th.col5,td.col5 {
 }
 
 th.col6,td.col6 {
-    width: 5%;
+    width: 10%;
 }
 
 th.col7,td.col7 {
@@ -39,10 +39,6 @@ th.col9,td.col9 {
 }
 
 th.col10,td.col10 {
-    width: 10%;
-}
-
-th.col11,td.col11 {
     width: 10%;
 }
 

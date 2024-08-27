@@ -64,7 +64,7 @@ function Sidenav() {
         <Accordion.Body>
           <span onClick={() => {navigate('/admin/roleManagement');}}>역할관리</span>
           <hr />
-          <span>사용자관리</span>
+          <span onClick={() => {navigate('/admin/userManagement');}}>사용자관리</span>
           <hr />
           <span onClick={() => {navigate('/admin/menuManagement');}}>메뉴관리</span>
           <hr />

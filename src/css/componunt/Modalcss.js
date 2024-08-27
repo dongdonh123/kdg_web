@@ -9,7 +9,7 @@ export const GridContainer = styled.div`
 
 export const FormItem = styled.div`
   display: flex;
-  flex-direction: center; //수직 정렬
+  flex-direction: row;
   margin-bottom: 10px;
 `;
 
@@ -18,6 +18,14 @@ export const Label = styled.label`
   font-weight: bold;
   //width: 100px;
   //margin-right: 10px;
+`;
+
+export const Select = styled.select`
+  width: 100px; // Set the width of the select element to 100px
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
 `;
 
 export const Input = styled.input`
@@ -71,5 +79,5 @@ export const Required = styled.span`
 export const LabelDiv = styled.div`
   display: flex;
   align-items: center;
-  width: 100px;  // 가로로 넓이를 100%로 설정
+  width: 100px;  
 `;

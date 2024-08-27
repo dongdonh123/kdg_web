@@ -12,6 +12,8 @@ const Pagination = ({
   totalItems, 
   isFirstLoad 
 }) => {
+
+
   
   const pagelist = () => {
     let pages = [];

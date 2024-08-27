@@ -56,7 +56,7 @@ function RoleManagement() {
       const response = await axios.post('http://localhost:8080/api/admin/role', data);
       alert(response.data.resultmessage);
       insertModalClose();
-      fetchRoleList();  // 데이터 갱신
+      fetchRoleList(currentPage, itemsPerPage, filterList);  // 데이터 갱신
     } catch (error) {
       console.error('역할 신규 등록 중 오류 발생:', error);
       alert('서버 오류로 인해 역할 신규 등록을 실패했습니다.');
@@ -88,7 +88,7 @@ function RoleManagement() {
       const response = await axios.put(`http://localhost:8080/api/admin/role/${RoleDetail.role_id}`, data);
       alert(response.data.resultmessage);
       updateModalClose();
-      fetchRoleList();  
+      fetchRoleList(currentPage, itemsPerPage, filterList);  
     } catch (error) {
       console.error('역할 수정 등록 중 오류 발생:', error);
       alert('서버 오류로 인해 역할 수정 등록을 실패했습니다.');
@@ -100,7 +100,7 @@ function RoleManagement() {
     try {
       const response = await axios.delete(`http://localhost:8080/api/admin/role/${RoleDetail.role_id}`);
       alert(response.data.resultmessage);
-      fetchRoleList();  // 데이터 갱신
+      fetchRoleList(currentPage, itemsPerPage, filterList);  // 데이터 갱신
       deleteModalClose();
     } catch (error) {
       console.error('역할 삭제 중 오류 발생:', error);
@@ -118,9 +118,10 @@ function RoleManagement() {
   const [otherInformation, setOtherInformation] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(50);
-  const [role_name, setRole_name] = useState('');
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [role_id, setRole_id] = useState('');
+
+  const [filterList, setFilterList] = useState({role_name:''});
   const [RoleDetail, setRoleDetail] = useState({        //오른쪽 메뉴정보 데이터
     role_id:'-',
     role_code:'-',
@@ -148,13 +149,13 @@ function RoleManagement() {
 
 
   //메인 리스트 가져오기
-  const fetchRoleList = async (page_no, page_cnt, role_name) => {
+  const fetchRoleList = async (page_no, page_cnt, filterList) => {
     try {
       // 기본 URL 설정
       let url = `http://localhost:8080/api/admin/role?page_no=${page_no}&page_cnt=${page_cnt}`;
       // role_name이 정의되어 있고 빈 값이 아닌 경우에만 URL에 추가
-      if (role_name !== undefined && role_name !== null && role_name.trim() !== '') {
-        url += `&role_name=${encodeURIComponent(role_name)}`;
+      if (filterList.role_name !== undefined && filterList.role_name !== null && filterList.role_name.trim() !== '') {
+        url += `&role_name=${encodeURIComponent(filterList.role_name)}`;
       }
       const response = await axios.get(url);
       setRoleList(response.data.roleList);
@@ -176,13 +177,13 @@ function RoleManagement() {
     }
   };
 
-  // 처음만 실행
+
   useEffect(() => {
     if (isFirstLoad) {
       return;
     }
-    fetchRoleList(currentPage, itemsPerPage);
-  }, [currentPage,itemsPerPage]); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 호출
+    fetchRoleList(currentPage, itemsPerPage, filterList );
+  }, [currentPage,itemsPerPage]); 
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= otherInformation.max_page_no || 1) {
@@ -196,8 +197,9 @@ function RoleManagement() {
   };
 
   const handleSearch = () => {
-    fetchRoleList(currentPage, itemsPerPage);
+    fetchRoleList(currentPage, itemsPerPage, filterList);
   };
+
 
   return (
     <div>
@@ -205,7 +207,7 @@ function RoleManagement() {
         <div className="title-ctn2"><div>역할관리</div></div>
         <div className="cud_button-ctn2"><Button onClick={insertModalShow}>신규</Button><Button onClick={updateModalShow}>수정</Button><Button onClick={deleteModalShow}>삭제</Button></div>
         <div className="read_button-ctn2" id="검색조건">
-          <div id="left">역할명 : <input type="text" value={role_name} placeholder="역할명 검색" onChange={(e) => setRole_name(e.target.value)}/></div>
+          <div id="left">역할명 : <input type="text" placeholder="역할명 검색" onChange={(e) => setFilterList({ role_name: e.target.value })} /></div>
           <div id="right"><Button onClick={handleSearch}>검색</Button></div>
         </div>
         <div className="maincontent-ctn2" id="메인그리드" >

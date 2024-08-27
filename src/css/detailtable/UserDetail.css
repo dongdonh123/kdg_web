@@ -1,0 +1,13 @@
+.DetailTable-UserDetail {
+    width: 100%;
+}
+
+.DetailTable-UserDetail .label{
+    font-weight: bold;
+    width: 20%;
+    padding-left: 30px;
+}
+
+.DetailTable-UserDetail .value{
+    width:  30%;
+}

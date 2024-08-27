@@ -4,6 +4,7 @@ import Resizer from './components/ResizerColumn';
 import { Routes, Route } from 'react-router-dom';
 import CommunityBoard from './route/board/communityBoard';
 import RoleManagement from './route/admin/RoleManagement';
+import UserManagement from './route/admin/UserManagement';
 import MenuManagement from './route/admin/MenuManagement';
 import Resetdata from './route/maintenance/Resetdata';
 import React, { useState, useRef, useCallback } from 'react';
@@ -33,6 +34,7 @@ function App() {
 
             <Route path="/admin">
               <Route path="roleManagement" element={<RoleManagement/>}></Route>
+              <Route path="userManagement" element={<UserManagement/>}></Route>
               <Route path="menuManagement" element={<MenuManagement/>}></Route>
             </Route>
 
