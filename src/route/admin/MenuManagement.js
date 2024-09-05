@@ -48,9 +48,22 @@ function MenuManagement() {
   // 모달처리
   const insertModalShow = () => setInsertModalOpen(true);
   const insertModalClose = () => setInsertModalOpen(false);
-  const updateModalShow = () => setUpdateModalOpen(true);
+  const updateModalShow = (menu_id) => {
+    if (!menu_id) {
+      alert("수정하려는 메뉴를 선택해주세요."); // 알럿을 띄움
+      return; // 함수 종료
+    }
+  
+    setUpdateModalOpen(true); // menu_id가 있을 때만 실행
+  };
   const updateModalClose = () => setUpdateModalOpen(false);
-  const deleteModalShow = () => setDeleteModalOpen(true);
+  const deleteModalShow = (menu_id) => {
+    if (!menu_id) {
+      alert("삭제하려는 메뉴를 선택해주세요."); // 알럿을 띄움
+      return; // 함수 종료
+    }
+    
+    setDeleteModalOpen(true);}
   const deleteModalClose = () => setDeleteModalOpen(false);
   
 
@@ -238,7 +251,7 @@ function MenuManagement() {
         </div>
 
         <div className="right-details-ctn3">
-          <div className="title-div-ctn3"><span>메뉴 상세정보</span><Button primary onClick={updateModalShow} >수정</Button> <Button primary onClick={deleteModalShow}>삭제</Button></div>
+          <div className="title-div-ctn3"><span>메뉴 상세정보</span><Button primary onClick={() => updateModalShow(menuInfo.menu_id)} >수정</Button> <Button primary onClick={() => deleteModalShow(menuInfo.menu_id)}>삭제</Button></div>
           <div className="contents-details-ctn3">
             <div className="detail-item-ctn3">
               <div className="item-label-ctn3">메뉴 ID</div>

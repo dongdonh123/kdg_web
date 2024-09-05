@@ -24,9 +24,21 @@ function UserManagement() {
   
   const insertModalShow = () => setInsertModalOpen(true);
   const insertModalClose = () => setInsertModalOpen(false);
-  const updateModalShow = () => setUpdateModalOpen(true);
+  const updateModalShow = (user_id) => {
+    if (user_id=="-") {
+      alert("수정하려는 사용자를 선택해주세요."); 
+      return; 
+    }
+    setUpdateModalOpen(true); 
+  };
   const updateModalClose = () => setUpdateModalOpen(false);
-  const deleteModalShow = () => setDeleteModalOpen(true);
+  const deleteModalShow = (user_id) => {
+    if (user_id=="-") {
+      alert("삭제하려는 사용자를 선택해주세요."); // 알럿을 띄움
+      return; // 함수 종료
+    }
+    setDeleteModalOpen(true);
+  };
   const deleteModalClose = () => setDeleteModalOpen(false);
 
   const handleInputChange = (e) => {
@@ -68,7 +80,7 @@ function UserManagement() {
       user_department: event.target.user_department.value,
       user_phon_no: event.target.user_phon_no.value,
       user_email: event.target.user_email.value,
-      rel_user_role: currentSelectedRoles // 배열 형식으로 전송
+      rel_user_roleID: currentSelectedRoles // 배열 형식으로 전송
     };
     try {
       alert(JSON.stringify(data, null, 2)); // 2는 들여쓰기의 공백 수
@@ -104,7 +116,7 @@ function UserManagement() {
       user_department: event.target.user_department.value,
       user_phon_no: event.target.user_phon_no.value,
       user_email: event.target.user_email.value,
-      rel_user_role: currentSelectedRoles // 배열 형식으로 전송
+      rel_user_roleID: currentSelectedRoles // 배열 형식으로 전송
     };
 
     try {
@@ -270,7 +282,7 @@ function UserManagement() {
       <div className="content_container-ctn2" ref={containerRef}>
         <div className="title-ctn2"><div>사용자관리</div></div>
         <div className="cud_button-ctn2">
-          <Button onClick={insertModalShow}>신규</Button><Button onClick={updateModalShow}>수정</Button><Button onClick={deleteModalShow}>삭제</Button><Button >비밀번호초기화</Button><Button >사용</Button><Button>사용정지</Button>
+          <Button onClick={insertModalShow}>신규</Button> <Button primary onClick={() => updateModalShow(UserDetail.user_id)} >수정</Button> <Button primary onClick={() => deleteModalShow(UserDetail.user_id)}>삭제</Button> <Button >비밀번호초기화</Button> <Button >사용</Button> <Button>사용정지</Button>
           </div>
         <div className="read_button-ctn2" id="검색조건">
           <div id="left">

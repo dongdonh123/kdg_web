@@ -18,9 +18,22 @@ function RoleManagement() {
   
   const insertModalShow = () => setInsertModalOpen(true);
   const insertModalClose = () => setInsertModalOpen(false);
-  const updateModalShow = () => setUpdateModalOpen(true);
+  const updateModalShow = (role_id) => {
+    if (role_id=="-") {
+      alert("수정하려는 역할을 선택해주세요."); 
+      return; 
+    }
+    setUpdateModalOpen(true); 
+  };
   const updateModalClose = () => setUpdateModalOpen(false);
-  const deleteModalShow = () => setDeleteModalOpen(true);
+  const deleteModalShow = (role_id) => {
+    if (role_id=="-") {
+      alert("삭제하려는 역할을 선택해주세요."); // 알럿을 띄움
+      return; // 함수 종료
+    }
+    setDeleteModalOpen(true);
+  };
+
   const deleteModalClose = () => setDeleteModalOpen(false);
 
   const handleInputChange = (e) => {
@@ -205,7 +218,7 @@ function RoleManagement() {
     <div>
       <div className="content_container-ctn2" ref={containerRef}>
         <div className="title-ctn2"><div>역할관리</div></div>
-        <div className="cud_button-ctn2"><Button onClick={insertModalShow}>신규</Button><Button onClick={updateModalShow}>수정</Button><Button onClick={deleteModalShow}>삭제</Button></div>
+        <div className="cud_button-ctn2"><Button onClick={insertModalShow}>신규</Button> <Button primary onClick={() => updateModalShow(RoleDetail.role_id)} >수정</Button> <Button primary onClick={() => deleteModalShow(RoleDetail.role_id)}>삭제</Button></div>
         <div className="read_button-ctn2" id="검색조건">
           <div id="left">역할명 : <input type="text" placeholder="역할명 검색" onChange={(e) => setFilterList({ role_name: e.target.value })} /></div>
           <div id="right"><Button onClick={handleSearch}>검색</Button></div>
