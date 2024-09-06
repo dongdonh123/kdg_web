@@ -21,6 +21,8 @@ function UserManagement() {
   const [insertModalOpen, setInsertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [passwdInitModalOpen, setPasswdInitModalOpen] = useState(false);
+  const [useYNModalOpen, setUseYNModalOpen] = useState(false);
   
   const insertModalShow = () => setInsertModalOpen(true);
   const insertModalClose = () => setInsertModalOpen(false);
@@ -40,6 +42,26 @@ function UserManagement() {
     setDeleteModalOpen(true);
   };
   const deleteModalClose = () => setDeleteModalOpen(false);
+
+  const passwdInitModalShow = (user_id) => {
+    if (user_id=="-") {
+      alert("사용자를 선택해주세요."); // 알럿을 띄움
+      return; // 함수 종료
+    }
+    setPasswdInitModalOpen(true);
+  };
+  const passwdInitModalClose = () => setPasswdInitModalOpen(false);
+
+  const useYNModalShow = (user_id) => {
+    if (user_id=="-") {
+      alert("사용자를 선택해주세요."); // 알럿을 띄움
+      return; // 함수 종료
+    }
+    setUseYNModalOpen(true);
+  };
+  const useYNModalClose = () => setUseYNModalOpen(false);
+
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -124,7 +146,8 @@ function UserManagement() {
       const response = await axios.put(`http://localhost:8080/api/admin/user/${UserDetail.user_id}`, data);
       alert(response.data.resultmessage);
       updateModalClose();
-      fetchUserList(currentPage, itemsPerPage, filterList);  
+      fetchUserList(currentPage, itemsPerPage, filterList);
+      fetchUserDetail();  
     } catch (error) {
       console.error('사용자 수정 등록 중 오류 발생:', error);
       alert('서버 오류로 인해 사용자 수정 등록을 실패했습니다.');
@@ -282,8 +305,13 @@ function UserManagement() {
       <div className="content_container-ctn2" ref={containerRef}>
         <div className="title-ctn2"><div>사용자관리</div></div>
         <div className="cud_button-ctn2">
-          <Button onClick={insertModalShow}>신규</Button> <Button primary onClick={() => updateModalShow(UserDetail.user_id)} >수정</Button> <Button primary onClick={() => deleteModalShow(UserDetail.user_id)}>삭제</Button> <Button >비밀번호초기화</Button> <Button >사용</Button> <Button>사용정지</Button>
-          </div>
+          <Button onClick={insertModalShow}>신규</Button>
+          <Button primary onClick={() => updateModalShow(UserDetail.user_id)} >수정</Button> 
+          <Button primary onClick={() => deleteModalShow(UserDetail.user_id)}>삭제</Button> 
+          <Button primary onClick={() => passwdInitModalShow(UserDetail.user_id)}>비밀번호초기화</Button> 
+          <Button >사용</Button> 
+          <Button >사용정지</Button>
+        </div>
         <div className="read_button-ctn2" id="검색조건">
           <div id="left">
             사용자명 : <input type="text" placeholder="사용자명 검색" onChange={handleUserNameChange} />
@@ -522,10 +550,48 @@ function UserManagement() {
       >
         <div>
           <h2>사용자 삭제</h2>
-          "{UserDetail.user_code}" "{UserDetail.user_name}" 사용자을 삭제하시겠습니까?
+          "{UserDetail.user_name}" "{UserDetail.user_account_id}" 사용자을 삭제하시겠습니까?
           <ButtonContainer>
             <Button primary onClick={handleDelete}>삭제</Button>
             <Button onClick={deleteModalClose}>닫기</Button>
+          </ButtonContainer>
+        </div>
+      </Modal>
+
+      {/* 비밀번호초기화 모달창 */}
+      <Modal
+        isOpen={passwdInitModalOpen}
+        onRequestClose={passwdInitModalClose}
+        style={DeleteModalStyles}
+        ariaHideApp={false}
+        contentLabel="Pop up Message"
+        shouldCloseOnOverlayClick={false}
+      >
+        <div>
+          <h2>사용자 비밀번호 초기화</h2>
+          "{UserDetail.user_name}" "{UserDetail.user_account_id}" 사용자의 비밀번호를 초기화하시겠습니까?
+          <ButtonContainer>
+            <Button primary onClick={handleDelete}>확인</Button>
+            <Button onClick={passwdInitModalClose}>닫기</Button>
+          </ButtonContainer>
+        </div>
+      </Modal>
+
+      {/* 사용여부 변경 모달창 */}
+      <Modal
+        isOpen={useYNModalOpen}
+        onRequestClose={useYNModalClose}
+        style={DeleteModalStyles}
+        ariaHideApp={false}
+        contentLabel="Pop up Message"
+        shouldCloseOnOverlayClick={false}
+      >
+        <div>
+          <h2>사용여부 변경</h2>
+          "{UserDetail.user_name}" "{UserDetail.user_account_id}" 사용자 사용여부를 변경하시겠습니까?
+          <ButtonContainer>
+            <Button primary onClick={handleDelete}>확인</Button>
+            <Button onClick={useYNModalClose}>닫기</Button>
           </ButtonContainer>
         </div>
       </Modal>
