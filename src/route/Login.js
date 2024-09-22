@@ -11,24 +11,42 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    
-    // 로그인 요청 예시 (서버에서 JWT 토큰을 발급받는 로직)
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    e.preventDefault(); // 기본 제출 동작 방지
 
-    const data = await response.json();
-    
-    if (data.token) {
-      localStorage.setItem('jwtToken', data.token); // 토큰 저장
-      navigate('/'); // 메인 페이지로 리다이렉트
-    } else {
-      alert('로그인 실패');
+    if (!username) {
+      alert('ID를 입력해주세요')
+      return;
+    }
+
+    if (!password) {
+      alert('PASSWD를 입력해주세요');
+      return;
+    }
+
+
+    const formData = new FormData(e.target);
+    formData.set('username', username); 
+    formData.set('password', password);
+
+    try {
+      alert(JSON.stringify(Object.fromEntries(formData.entries()), null, 2)); // JSON 형식으로 문자열화하여 알림창에 표시
+      const response = await axios.post('http://localhost:8080/login', formData);
+      console.log('Server response:', response); // 응답 확인
+      
+      // Authorization 헤더에서 토큰 추출
+      const token = response.headers['authorization']; // 'Bearer eyJ...' 형태
+
+      if (token) {
+        const jwt = token.split(' ')[1]; // 'Bearer ' 제거하고 JWT만 가져오기
+        localStorage.setItem('jwtToken', jwt); // JWT 토큰 저장
+        alert('로그인 성공!'); // 성공 메시지
+        navigate('/'); // 메인 페이지로 리다이렉트
+      } else {
+        alert('로그인 실패: 토큰이 없습니다.');
+      }
+    } catch (error) {
+      console.error('로그인 중 오류 발생:', error);
+      alert('로그인 실패: ' + error.response?.data || '서버 오류');
     }
   };
 
@@ -36,32 +54,6 @@ function Login() {
   const insertModalClose = () => setInsertModalOpen(false);
   const insertModalShow = () => setInsertModalOpen(true);
 
-  //신규등록 api 호출부분 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
-    const roleCode = event.target.role_code.value.trim();
-    const roleName = event.target.role_name.value.trim();
-    if (!roleCode) {
-      alert('역할코드는 필수값입니다.')
-      return;
-    }
-
-    if (!roleName) {
-      alert('역할명은 필수값입니다.');
-      return;
-    }
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
-    try {
-      const response = await axios.post('http://localhost:8080/api/login/setpasswd', data);
-      alert(response.data.resultmessage);
-      insertModalClose();
-    } catch (error) {
-      console.error('패스워드 설정중 오류 발생:', error);
-      alert('서버 오류로 인해 패스워드 설정을 실패했습니다.');
-    }
-  };
 
 
   return (
@@ -70,18 +62,21 @@ function Login() {
       <form onSubmit={handleLogin}>
         <div>
           <label>아이디:</label>
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <input type="text" value={username} onChange={(e) => {
+  setUsername(e.target.value);
+}} />
         </div>
         <div>
           <label>비밀번호:</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input type="password" value={password} onChange={(e) => {
+  setPassword(e.target.value);
+}} />
         </div>
-        <Button primary type="submit">로그인</Button>
-        <Button onClick={insertModalShow}>신규</Button>
+        <Button type="submit">로그인</Button>
       </form>
 
       {/* 신규등록 모달창 */}
-      <Modal isOpen={insertModalOpen} 
+      {/* <Modal isOpen={insertModalOpen} 
              onRequestClose={insertModalClose} 
              style={InsertModalStyles} 
              ariaHideApp={false} 
@@ -113,7 +108,7 @@ function Login() {
             </ButtonContainer>
           </form>
         </div>
-      </Modal>
+      </Modal> */}
     </div>
   );
 }
