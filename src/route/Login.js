@@ -44,9 +44,17 @@ function Login() {
       } else {
         alert('로그인 실패: 토큰이 없습니다.');
       }
-    } catch (error) {
+    }catch (error) {
       console.error('로그인 중 오류 발생:', error);
-      alert('로그인 실패: ' + error.response?.data || '서버 오류');
+      
+      // 서버에서 보내는 오류 메시지가 있는 경우 표시
+      if (error.response?.data?.message) {
+          alert('로그인 실패: ' + error.response.data.message);
+          
+      } else {
+        console.log('Error response data:', error);
+          alert('로그인 실패: 서버 오류');
+      }
     }
   };
 
