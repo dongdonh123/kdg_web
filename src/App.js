@@ -21,6 +21,7 @@ function App() {
 
    // 로그인 여부를 확인하여 로그인 페이지를 제어하는 상태 변수
    const isLoggedIn = isAuthenticated();
+   console.log("isLoggedIn : " + isLoggedIn);
 
   return (
     <div className="App">
