@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GridContainer, FormItem, Label, Input, ButtonContainer, InsertModalStyles, Required, LabelDiv } from '../css/componunt/Modalcss';
+import { PasswordGridContainer, FormItem, Label, Input, ButtonContainer, PasswordResetModalStyles, Required, PasswordLabelDiv } from '../css/componunt/Modalcss';
 import Modal from 'react-modal';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
@@ -51,6 +51,12 @@ function Login() {
       
       // 서버에서 보내는 오류 메시지가 있는 경우 표시
       if (error.response?.data?.message) {
+        if(error.response.data.message == "패스워드가 설정되지 않았습니다. password 설정이 필요합니다."){
+          passwordModalShow()
+          alert("패스워드를 설정해주세요") // 패스워드 설정 모달 만들기
+          return 0
+        }
+
           alert('로그인 실패: ' + error.response.data.message);
           SetLoginfailmassage(error.response.data.message);
           
@@ -60,11 +66,55 @@ function Login() {
           SetLoginfailmassage("서버 오류. 관리자에게 문의하세요.");
       }
     }
+
   };
 
-  const [insertModalOpen, setInsertModalOpen] = useState(false);
-  const insertModalClose = () => setInsertModalOpen(false);
-  const insertModalShow = () => setInsertModalOpen(true);
+
+  //   //패스워드재설정 api 호출부분 
+  const resetPassword = async (event) => {
+    //   event.preventDefault();
+  
+    //   const userName = event.target.user_name.value.trim();
+    //   const userAccountId = event.target.user_account_id.value.trim();
+    //   if (!userName) {
+    //     alert('사용자명은 필수값입니다.')
+    //     return;
+    //   }
+  
+    //   if (!userAccountId) {
+    //     alert('사용자ID는 필수값입니다.');
+    //     return;
+    //   }
+  
+    //   // 데이터 객체 생성
+    //   const data = {
+    //     user_name: userName,
+    //     user_account_id: userAccountId,
+    //     user_use_yn: user_use_yn,
+    //     user_category: event.target.user_category.value,
+    //     user_department: event.target.user_department.value,
+    //     user_phon_no: event.target.user_phon_no.value,
+    //     user_email: event.target.user_email.value,
+    //     rel_user_roleID: currentSelectedRoles // 배열 형식으로 전송
+    //   };
+    //   try {
+    //     alert(JSON.stringify(data, null, 2)); // 2는 들여쓰기의 공백 수
+    //     const response = await axios.post('http://localhost:8080/api/admin/user', data);
+    //     alert(response.data.resultmessage);
+    //     passwordModalClose();
+    //     fetchUserList(currentPage, itemsPerPage, filterList);  // 데이터 갱신
+    //   } catch (error) {
+    //     console.error('사용자 신규 등록 중 오류 발생:', error);
+    //     alert('서버 오류로 인해 사용자 신규 등록을 실패했습니다.');
+    //   }
+    };
+
+
+
+
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const passwordModalClose = () => setPasswordModalOpen(false);
+  const passwordModalShow = () => setPasswordModalOpen(true);
 
 
 
@@ -111,40 +161,46 @@ function Login() {
       </div>
       
 
-      {/* 신규등록 모달창 */}
-      {/* <Modal isOpen={insertModalOpen} 
-             onRequestClose={insertModalClose} 
-             style={InsertModalStyles} 
+      {/* 패스워드설정 모달창 */}
+      <Modal isOpen={passwordModalOpen} 
+             onRequestClose={passwordModalClose} 
+             style={PasswordResetModalStyles} 
              ariaHideApp={false} 
              contentLabel="Pop up Message" 
              shouldCloseOnOverlayClick={false}
       >
         <div>
-          <h2>패스워드 설정 셋팅</h2>
-          <form onSubmit={handleInsert}>
-            <GridContainer>
+          <h2 style={{backgroundColor: '#287eff', color: 'white'}}>암호 변경</h2>
+          <form onSubmit={resetPassword}>
+            <PasswordGridContainer>
                 <FormItem key="1">
-                  <LabelDiv>
-                    <Label htmlFor="역할코드">역할코드</Label>
-                    <Required>*</Required>
-                  </LabelDiv>
-                  <Input type="text" id="역할코드" name="role_code"/>
+                  <PasswordLabelDiv>
+                    <Label htmlFor="사용자ID">사용자ID</Label>
+                  </PasswordLabelDiv>
+                  <Input type="text" id="사용자ID" name="role_code"/>
                 </FormItem>
                 <FormItem key="2">
-                  <LabelDiv>
-                    <Label htmlFor="역할명">역할명</Label>
+                  <PasswordLabelDiv>
+                    <Label htmlFor="비밀번호">비밀번호</Label>
                     <Required>*</Required>
-                  </LabelDiv>
-                  <Input type="text" id="역할명" name="role_name"/>
+                  </PasswordLabelDiv>
+                  <Input type="password" id="비밀번호" name="role_name"/>
                 </FormItem>
-            </GridContainer>
+                <FormItem key="3">
+                  <PasswordLabelDiv>
+                    <Label htmlFor="비밀번호확인">비밀번호확인</Label>
+                    <Required>*</Required>
+                  </PasswordLabelDiv>
+                  <Input type="password" id="비밀번호확인" name="role_name"/>
+                </FormItem>
+            </PasswordGridContainer>
             <ButtonContainer>
-              <Button primary type="submit">등록</Button>
-              <Button onClick={insertModalClose}>닫기</Button>
+              <Button primary type="submit">확인</Button>
+              <Button onClick={passwordModalClose}>취소</Button>
             </ButtonContainer>
           </form>
         </div>
-      </Modal> */}
+      </Modal> 
     </div>
   );
 }

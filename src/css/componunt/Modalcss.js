@@ -7,6 +7,12 @@ export const GridContainer = styled.div`
   gap: 10px;
 `;
 
+export const PasswordGridContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+`;
+
 export const FormItem = styled.div`
   display: flex;
   flex-direction: row;
@@ -71,6 +77,20 @@ export const DeleteModalStyles = {
     },
   };
 
+  export const PasswordResetModalStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      padding: '10px',
+      borderRadius: '8px',
+      width: '400px',
+    },
+  };
+
 export const Required = styled.span`
   color: red;
   margin-right: 10px;
@@ -80,4 +100,10 @@ export const LabelDiv = styled.div`
   display: flex;
   align-items: center;
   width: 100px;  
+`;
+
+export const PasswordLabelDiv = styled.div`
+  display: flex;
+  align-items: center;
+  width: 120px;  
 `;
