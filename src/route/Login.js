@@ -1,3 +1,4 @@
+import "../css/font/font.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -15,6 +16,7 @@ import { Button } from "react-bootstrap";
 import axios from "axios";
 
 function Login() {
+  const [user_id, setUser_id] = useState(0);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginfailmassage, SetLoginfailmassage] = useState(
@@ -105,15 +107,14 @@ function Login() {
       password: password, // 배열 형식으로 전송
     };
     try {
-      alert(JSON.stringify(data, null, 2)); // 2는 들여쓰기의 공백 수
-      // const response = await axios.post(
-      //   "http://localhost:8080/api/admin/user",
-      //   data
-      // );
-      // alert(response.data.resultmessage);
-      alert("버튼은 잘 눌린다~!");
+      // alert(JSON.stringify(data, null, 2)); // 2는 들여쓰기의 공백 수
+      const response = await axios.put(
+        `http://localhost:8080/api/admin/user/changepassword${user_id}`,
+        data
+      );
+      alert(response.data.resultmessage);
       passwordModalClose();
-      //fetchUserList(currentPage, itemsPerPage, filterList); // 데이터 갱신
+      setPassword(""); // 패스워드입력 지우기
     } catch (error) {
       alert("서버 오류로 인해 사용자 신규 등록을 실패했습니다.");
     }
