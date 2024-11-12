@@ -63,6 +63,11 @@ function Login() {
     } catch (error) {
       console.error("로그인 중 오류 발생:", error);
 
+      // 서버에서 보내는 Id가 있을경우 초기화
+      if(error.response?.data?.user_id){
+        setUser_id(error.response?.data?.user_id)
+      }
+
       // 서버에서 보내는 오류 메시지가 있는 경우 표시
       if (error.response?.data?.message) {
         if (
@@ -81,6 +86,7 @@ function Login() {
         alert("서버 오류. 관리자에게 문의하세요.");
         SetLoginfailmassage("서버 오류. 관리자에게 문의하세요.");
       }
+
     }
   };
 
@@ -103,13 +109,13 @@ function Login() {
     }
     // 데이터 객체 생성
     const data = {
-      username: username,
-      password: password, // 배열 형식으로 전송
+      user_account_id: username,
+      user_passwd: password, // 배열 형식으로 전송
     };
     try {
-      // alert(JSON.stringify(data, null, 2)); // 2는 들여쓰기의 공백 수
+      alert(JSON.stringify(data, null, 2)); // 2는 들여쓰기의 공백 수
       const response = await axios.put(
-        `http://localhost:8080/api/admin/user/changepassword${user_id}`,
+        `http://localhost:8080/api/admin/user/changepassword/${user_id}`,
         data
       );
       alert(response.data.resultmessage);
