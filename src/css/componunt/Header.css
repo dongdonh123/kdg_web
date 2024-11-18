@@ -1,0 +1,35 @@
+.HeaderMain {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+.left {
+  color: white;
+  width: 50%;
+  height: 100%;
+  display: flex; /* Flexbox를 적용 */
+  align-items: center; /* 상하 중앙 정렬 */
+}
+.right {
+  color: white;
+  width: 50%;
+  height: 100%;
+  display: flex; /* Flexbox를 적용 */
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  align-items: center; /* 상하 중앙 정렬 */
+  margin-right: 40px;
+}
+
+/* 기본 이미지 스타일 */
+.hover-image {
+  transition: transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
+}
+
+/* 마우스를 올렸을 때 (호버) */
+.hover-image:hover {
+  transform: scale(1.1); /* 이미지를 살짝 확대 */
+  opacity: 1;
+  filter: brightness(0.4) /* 밝기를 올려서 주황색 강조 */ saturate(3)
+    /* 채도를 크게 증가시켜서 색을 강렬하게 */ hue-rotate(35deg)
+    /* 35도를 설정하여 정확한 주황색 만들기 */ contrast(3); /* 대비를 올려 색을 뚜렷하게 */
+}

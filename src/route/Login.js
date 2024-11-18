@@ -1,6 +1,6 @@
 import "../css/font/font.css";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import {
   PasswordGridContainer,
   FormItem,
@@ -22,7 +22,6 @@ function Login() {
   const [loginfailmassage, SetLoginfailmassage] = useState(
     "게스트 로그인해서 웹사이트를 구경하세요."
   );
-  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault(); // 기본 제출 동작 방지
@@ -53,10 +52,8 @@ function Login() {
       const token = response.headers["authorization"]; // 'Bearer eyJ...' 형태
 
       if (token) {
-        const jwt = token.split(" ")[1]; // 'Bearer ' 제거하고 JWT만 가져오기
-        localStorage.setItem("jwtToken", jwt); // JWT 토큰 저장
-        alert("로그인 성공!"); // 성공 메시지
-        navigate("/"); // 메인 페이지로 리다이렉트
+        localStorage.setItem("KDH_JWT_TOKEN", token); // JWT 토큰 저장
+        window.location.href = "/"; // / 경로로 리다이렉트
       } else {
         alert("로그인 실패: 토큰이 없습니다.");
       }
@@ -64,8 +61,8 @@ function Login() {
       console.error("로그인 중 오류 발생:", error);
 
       // 서버에서 보내는 Id가 있을경우 초기화
-      if(error.response?.data?.user_id){
-        setUser_id(error.response?.data?.user_id)
+      if (error.response?.data?.user_id) {
+        setUser_id(error.response?.data?.user_id);
       }
 
       // 서버에서 보내는 오류 메시지가 있는 경우 표시
@@ -86,7 +83,6 @@ function Login() {
         alert("서버 오류. 관리자에게 문의하세요.");
         SetLoginfailmassage("서버 오류. 관리자에게 문의하세요.");
       }
-
     }
   };
 
@@ -113,7 +109,7 @@ function Login() {
       user_passwd: password, // 배열 형식으로 전송
     };
     try {
-      alert(JSON.stringify(data, null, 2)); // 2는 들여쓰기의 공백 수
+      // alert(JSON.stringify(data, null, 2)); // 2는 들여쓰기의 공백 수
       const response = await axios.put(
         `http://localhost:8080/api/admin/user/changepassword/${user_id}`,
         data
@@ -121,8 +117,10 @@ function Login() {
       alert(response.data.resultmessage);
       passwordModalClose();
       setPassword(""); // 패스워드입력 지우기
+      SetLoginfailmassage(response.data.resultmessage);
     } catch (error) {
-      alert("서버 오류로 인해 사용자 신규 등록을 실패했습니다.");
+      SetLoginfailmassage("서버 오류로 인해 패스워드 재설정을 실패했습니다.");
+      alert("서버 오류로 인해 패스워드 재설정을 실패했습니다.");
     }
   };
 
@@ -312,7 +310,7 @@ function Login() {
             >
               <Button style={{ width: "49%" }} type="submit">
                 일반 로그인
-              </Button>{" "}
+              </Button>
               <Button
                 style={{
                   width: "49%",

@@ -25,6 +25,9 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 
 function UserManagement() {
+  // localStorage에서 JWT 토큰 가져오기
+  const token = localStorage.getItem("KDH_JWT_TOKEN");
+
   // 모달처리 시작
   const [insertModalOpen, setInsertModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
@@ -306,7 +309,11 @@ function UserManagement() {
           filterList.user_account_id
         )}`;
       }
-      const response = await axios.get(url);
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "", // JWT 토큰을 Authorization 헤더에 포함
+        },
+      });
       setUserList(response.data.userList);
       setOtherInformation(response.data.otherInformation);
       setIsFirstLoad(false);
